@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Styles react-datepicker supprimés car remplacés par react-tailwindcss-datepicker */
+
+/* Fix pour empêcher Tailwind Forms d'ajouter un cadre bleu (border/ring) sur l'input invisible de react-select */
+.react-select__input-container input,
+.react-select__input-container input:focus {
+    box-shadow: none !important;
+    border: none !important;
+    outline: none !important;
+    --tw-ring-shadow: 0 0 #0000 !important;
+    --tw-ring-offset-shadow: 0 0 #0000 !important;
+}
