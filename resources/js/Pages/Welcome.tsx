@@ -12,10 +12,7 @@ export default function Welcome({
                 {/* Navbar (Upper part) */}
                 <header className="relative z-50 flex items-center justify-between px-6 py-6 lg:px-12 bg-white/50 dark:bg-[#181c25]/50 backdrop-blur-md border-b border-gray-200/50 dark:border-white/5">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-[#29303d] dark:bg-primary-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg">
-                            G
-                        </div>
-                        <span className="text-xl font-black text-[#29303d] dark:text-white tracking-tight">Gyptec System</span>
+                        <span className="text-xl font-black text-[#29303d] dark:text-white tracking-tight">MD-NACIRI</span>
                     </div>
 
                     <nav className="flex items-center gap-4">
@@ -81,8 +78,8 @@ export default function Welcome({
                 {/* Footer */}
                 <footer className="py-8 text-center relative z-10 border-t border-gray-200/50 dark:border-white/5 bg-white/50 dark:bg-[#181c25]/50 backdrop-blur-sm">
                     <p className="text-sm font-bold text-gray-500 dark:text-gray-400 flex items-center justify-center gap-2">
-                        Designed & Developed with <span className="text-red-500">❤️</span> by 
-                        <a href="#" className="text-[#29303d] dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                        Designed & Developed by 
+                        <a href="#" className="text-[#29303d] dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors ml-1">
                             md-naciri
                         </a>
                     </p>

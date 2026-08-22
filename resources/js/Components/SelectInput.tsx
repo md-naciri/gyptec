@@ -48,7 +48,7 @@ export default forwardRef(function SelectInput(
                             portal={true}
                             anchor="bottom start" 
                             transition
-                            className="z-50 max-h-60 min-w-[var(--button-width)] overflow-auto rounded-md bg-white dark:bg-[#181c25] py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 dark:ring-white/10 focus:outline-none sm:text-sm transition ease-in duration-100 data-[leave]:data-[closed]:opacity-0"
+                            className="z-[9999] max-h-60 min-w-[var(--button-width)] overflow-auto rounded-md bg-white dark:bg-[#181c25] py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 dark:ring-white/10 focus:outline-none sm:text-sm transition ease-in duration-100 data-[leave]:data-[closed]:opacity-0"
                         >
                             {options.map((option, idx) => (
                                 <Listbox.Option

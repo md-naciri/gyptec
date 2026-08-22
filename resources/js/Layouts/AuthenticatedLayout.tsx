@@ -50,7 +50,7 @@ export default function Authenticated({
             )}
             
             {/* Navbar Premium */}
-            <nav className="bg-[#ecebe8]/70 dark:bg-[#181c25]/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-white/5 sticky top-0 z-40 transition-all duration-300 print:hidden">
+            <nav className="bg-[#ecebe8]/50 dark:bg-[#181c25]/80 backdrop-blur-xl border-b border-gray-200 dark:border-white/5 sticky top-0 z-40 transition-all duration-300 print:hidden">
                 <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
                     <div className="flex h-14 justify-between items-center gap-8">
                         {/* Logo Area */}
@@ -99,14 +99,14 @@ export default function Authenticated({
                                     <Dropdown.Trigger>
                                         <button
                                             type="button"
-                                            className={`inline-flex items-center px-4 py-2 text-[14px] rounded-lg transition-all duration-200 focus:outline-none border ${
+                                            className={`inline-flex items-center px-4 py-2 text-[14px] font-medium rounded-lg transition-all duration-200 focus:outline-none border ${
                                                 route().current('produits.*') || route().current('prix-clients.*')
-                                                    ? 'bg-[#29303d] dark:bg-primary-600 text-white font-bold shadow-md border-transparent'
-                                                    : 'text-gray-500 dark:text-gray-400 font-medium border-transparent hover:border-gray-200 dark:hover:border-white/10 hover:bg-gray-50/80 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white'
+                                                ? 'bg-white/60 dark:bg-white/10 text-[#29303d] dark:text-white shadow-sm border-gray-200 dark:border-white/10 font-bold'
+                                                : 'text-gray-500 dark:text-gray-400 border-transparent hover:border-gray-200 dark:hover:border-white/10 hover:bg-white/40 dark:hover:bg-white/5 hover:text-[#29303d] dark:hover:text-white'
                                             }`}
                                         >
                                             Configuration
-                                            <svg className={`ml-1.5 h-4 w-4 transition-transform ${route().current('produits.*') || route().current('prix-clients.*') ? 'text-white/70' : 'text-gray-400 dark:text-gray-500'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <svg className={`ml-1.5 h-4 w-4 transition-transform ${route().current('produits.*') || route().current('prix-clients.*') ? 'text-[#29303d] dark:text-white' : 'text-gray-400 dark:text-gray-500'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                                 <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                                             </svg>
                                         </button>
@@ -124,14 +124,14 @@ export default function Authenticated({
                                     <Dropdown.Trigger>
                                         <button
                                             type="button"
-                                            className={`inline-flex items-center px-4 py-2 text-[14px] rounded-lg transition-all duration-200 focus:outline-none border ${
+                                            className={`inline-flex items-center px-4 py-2 text-[14px] font-medium rounded-lg transition-all duration-200 focus:outline-none border ${
                                                 route().current('remises.*')
-                                                    ? 'bg-[#29303d] dark:bg-primary-600 text-white font-bold shadow-md border-transparent'
-                                                    : 'text-gray-500 dark:text-gray-400 font-medium border-transparent hover:border-gray-200 dark:hover:border-white/10 hover:bg-gray-50/80 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white'
+                                                ? 'bg-white/60 dark:bg-white/10 text-[#29303d] dark:text-white shadow-sm border-gray-200 dark:border-white/10 font-bold'
+                                                : 'text-gray-500 dark:text-gray-400 border-transparent hover:border-gray-200 dark:hover:border-white/10 hover:bg-white/40 dark:hover:bg-white/5 hover:text-[#29303d] dark:hover:text-white'
                                             }`}
                                         >
                                             Remises
-                                            <svg className={`ml-1.5 h-4 w-4 transition-transform ${route().current('remises.*') ? 'text-white/70' : 'text-gray-400 dark:text-gray-500'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <svg className={`ml-1.5 h-4 w-4 transition-transform ${route().current('remises.*') ? 'text-[#29303d] dark:text-white' : 'text-gray-400 dark:text-gray-500'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                                 <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                                             </svg>
                                         </button>
