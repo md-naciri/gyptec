@@ -1,0 +1,1 @@
+function e(e){if(!e)return`-`;let t=new Date(e);return isNaN(t.getTime())?e:new Intl.DateTimeFormat(`fr-MA`,{day:`2-digit`,month:`2-digit`,year:`numeric`}).format(t)}function t(){return new Intl.DateTimeFormat(`en-CA`,{timeZone:`Africa/Casablanca`,year:`numeric`,month:`2-digit`,day:`2-digit`}).format(new Date)}export{t as n,e as t};
