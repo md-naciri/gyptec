@@ -4,6 +4,7 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
+import ThemeToggle from '@/Components/ThemeToggle';
 
 export default function Authenticated({
     header,
@@ -30,7 +31,7 @@ export default function Authenticated({
     }, [flash]);
 
     return (
-        <div className="min-h-screen bg-[#f8f9fa] font-sans">
+        <div className="min-h-screen bg-[#f8f9fa] dark:bg-[#0f121a] text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300">
             {toastMessage && (
                 <div className="fixed top-4 right-4 z-50 animate-fade-in-down">
                     <div className={`rounded-xl px-4 py-3 shadow-xl border flex items-center gap-3 ${toastMessage.type === 'success' ? 'bg-white border-green-100' : 'bg-white border-red-100'}`}>
@@ -49,13 +50,13 @@ export default function Authenticated({
             )}
             
             {/* Navbar Premium */}
-            <nav className="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-40 transition-all duration-300 print:hidden">
+            <nav className="bg-white/90 dark:bg-[#181c25]/90 backdrop-blur-md border-b border-gray-100 dark:border-white/5 sticky top-0 z-40 transition-all duration-300 print:hidden">
                 <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
-                    <div className="flex h-16 justify-between items-center gap-8">
+                    <div className="flex h-14 justify-between items-center gap-8">
                         {/* Logo Area */}
                         <div className="flex shrink-0 items-center">
                             <Link href="/">
-                                <ApplicationLogo className="block h-10 w-auto" />
+                                <ApplicationLogo className="block h-9 w-auto" />
                             </Link>
                         </div>
 
@@ -98,19 +99,19 @@ export default function Authenticated({
                                     <Dropdown.Trigger>
                                         <button
                                             type="button"
-                                            className={`inline-flex items-center px-4 py-2 text-[14px] rounded-xl transition-all duration-200 focus:outline-none border ${
+                                            className={`inline-flex items-center px-4 py-2 text-[14px] rounded-lg transition-all duration-200 focus:outline-none border ${
                                                 route().current('produits.*') || route().current('prix-clients.*')
-                                                    ? 'bg-[#29303d] text-white font-bold shadow-md border-transparent'
-                                                    : 'text-gray-500 font-medium border-transparent hover:border-gray-200 hover:bg-gray-50/80 hover:text-gray-900'
+                                                    ? 'bg-[#29303d] dark:bg-primary-600 text-white font-bold shadow-md border-transparent'
+                                                    : 'text-gray-500 dark:text-gray-400 font-medium border-transparent hover:border-gray-200 dark:hover:border-white/10 hover:bg-gray-50/80 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white'
                                             }`}
                                         >
                                             Configuration
-                                            <svg className={`ml-1.5 h-4 w-4 transition-transform ${route().current('produits.*') || route().current('prix-clients.*') ? 'text-white/70' : 'text-gray-400'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <svg className={`ml-1.5 h-4 w-4 transition-transform ${route().current('produits.*') || route().current('prix-clients.*') ? 'text-white/70' : 'text-gray-400 dark:text-gray-500'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                                 <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                                             </svg>
                                         </button>
                                     </Dropdown.Trigger>
-                                    <Dropdown.Content width="48" contentClasses="bg-white">
+                                    <Dropdown.Content width="48" contentClasses="bg-white dark:bg-[#181c25]">
                                         <Dropdown.Link href={route('produits.index')}>Produits</Dropdown.Link>
                                         <Dropdown.Link href={route('prix-clients.index')}>Prix par Client</Dropdown.Link>
                                     </Dropdown.Content>
@@ -123,19 +124,19 @@ export default function Authenticated({
                                     <Dropdown.Trigger>
                                         <button
                                             type="button"
-                                            className={`inline-flex items-center px-4 py-2 text-[14px] rounded-xl transition-all duration-200 focus:outline-none border ${
+                                            className={`inline-flex items-center px-4 py-2 text-[14px] rounded-lg transition-all duration-200 focus:outline-none border ${
                                                 route().current('remises.*')
-                                                    ? 'bg-[#29303d] text-white font-bold shadow-md border-transparent'
-                                                    : 'text-gray-500 font-medium border-transparent hover:border-gray-200 hover:bg-gray-50/80 hover:text-gray-900'
+                                                    ? 'bg-[#29303d] dark:bg-primary-600 text-white font-bold shadow-md border-transparent'
+                                                    : 'text-gray-500 dark:text-gray-400 font-medium border-transparent hover:border-gray-200 dark:hover:border-white/10 hover:bg-gray-50/80 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white'
                                             }`}
                                         >
                                             Remises
-                                            <svg className={`ml-1.5 h-4 w-4 transition-transform ${route().current('remises.*') ? 'text-white/70' : 'text-gray-400'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <svg className={`ml-1.5 h-4 w-4 transition-transform ${route().current('remises.*') ? 'text-white/70' : 'text-gray-400 dark:text-gray-500'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                                 <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                                             </svg>
                                         </button>
                                     </Dropdown.Trigger>
-                                    <Dropdown.Content width="48" contentClasses="bg-white">
+                                    <Dropdown.Content width="48" contentClasses="bg-white dark:bg-[#181c25]">
                                         <Dropdown.Link href={route('remises.baremes')}>Barèmes Remises</Dropdown.Link>
                                         <Dropdown.Link href={route('remises.calculs')}>Calculer Remises</Dropdown.Link>
                                     </Dropdown.Content>
@@ -145,20 +146,22 @@ export default function Authenticated({
 
                         {/* Right Area (Admin/Profile) */}
                         <div className="hidden sm:flex sm:items-center shrink-0">
+                            <ThemeToggle />
+                            
                             <div className="relative">
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <span className="inline-flex">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center px-3 py-1.5 text-[14px] font-bold text-[#29303d] transition-all duration-200 border border-transparent hover:border-gray-200 hover:bg-gray-50/80 rounded-xl focus:outline-none"
+                                                className="inline-flex items-center px-3 py-1.5 text-[14px] font-bold text-[#29303d] dark:text-white transition-all duration-200 border border-transparent hover:border-gray-200 dark:hover:border-white/10 hover:bg-gray-50/80 dark:hover:bg-white/5 rounded-lg focus:outline-none"
                                             >
-                                                <div className="w-8 h-8 rounded-full bg-[#ecebe8] border border-gray-200 flex items-center justify-center mr-3 text-xs font-black text-gray-500 uppercase tracking-widest">
+                                                <div className="w-8 h-8 rounded-full bg-[#ecebe8] dark:bg-[#2a303c] border border-gray-200 dark:border-white/10 flex items-center justify-center mr-3 text-xs font-black text-gray-500 dark:text-gray-300 uppercase tracking-widest">
                                                     {user.name.substring(0, 2)}
                                                 </div>
                                                 {user.name}
                                                 <svg
-                                                    className="ml-2 h-4 w-4 text-gray-400"
+                                                    className="ml-2 h-4 w-4 text-gray-400 dark:text-gray-500"
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 20 20"
                                                     fill="currentColor"
@@ -173,7 +176,7 @@ export default function Authenticated({
                                         </span>
                                     </Dropdown.Trigger>
 
-                                    <Dropdown.Content align="right" width="48" contentClasses="bg-white">
+                                    <Dropdown.Content align="right" width="48" contentClasses="bg-white dark:bg-[#181c25]">
                                         <Dropdown.Link
                                             href={route('profile.edit')}
                                         >

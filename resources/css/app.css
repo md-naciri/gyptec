@@ -14,3 +14,38 @@
     --tw-ring-shadow: 0 0 #0000 !important;
     --tw-ring-offset-shadow: 0 0 #0000 !important;
 }
+
+@media print {
+    @page {
+        size: A4 landscape;
+        margin: 1cm;
+    }
+    
+    body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* Prevent table truncation */
+    table {
+        page-break-inside: auto;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+
+    th, td {
+        word-wrap: break-word;
+        font-size: 10px !important; /* Smaller text for print */
+        padding: 4px 6px !important; /* Tighter padding for print */
+    }
+    
+    /* Ensure containers don't clip content during printing */
+    .overflow-x-auto, .overflow-hidden {
+        overflow: visible !important;
+    }
+}

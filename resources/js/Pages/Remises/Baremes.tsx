@@ -76,21 +76,21 @@ export default function RemisesBaremes({ annee, clients, produits, baremes }: an
                 <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
                     
                     {/* La "Super Card" */}
-                    <div className="bg-[#ecebe8] rounded-[2rem] lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-12 shadow-sm border border-gray-200/50">
+                    <div className="bg-[#ecebe8] dark:bg-[#181c25] rounded-[2rem] lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-12 shadow-sm border border-gray-200/50 dark:border-white/5">
                         
                         {/* En-tête interne */}
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
                             <div>
-                                <h1 className="text-4xl lg:text-5xl font-black text-[#29303d] tracking-tight mb-2">Barèmes de Remise</h1>
-                                <p className="text-gray-600 text-lg">Définition des objectifs et taux de remise annuels par client</p>
+                                <h1 className="text-4xl lg:text-5xl font-black text-[#29303d] dark:text-white tracking-tight mb-2">Barèmes de Remise</h1>
+                                <p className="text-gray-600 dark:text-gray-400 text-lg">Définition des objectifs et taux de remise annuels par client</p>
                             </div>
                         </div>
 
                         {/* Îlot 1 : Toolbar (Filtres & Info) */}
-                        <div className="bg-white rounded-[1.5rem] p-6 lg:p-8 shadow-sm mb-8 flex flex-col lg:flex-row justify-between items-center gap-6">
+                        <div className="bg-white dark:bg-[#1f2430] rounded-[1.5rem] p-6 lg:p-8 shadow-sm mb-8 flex flex-col lg:flex-row justify-between items-center gap-6 border border-gray-100 dark:border-white/5">
                             <div className="w-full lg:w-1/2 flex flex-col sm:flex-row gap-4">
                                 <div className="w-full sm:w-1/3 flex flex-col gap-2">
-                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Année</label>
+                                    <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Année</label>
                                     <SelectInput 
                                         className="w-full h-11"
                                         value={selectedAnnee}
@@ -105,7 +105,7 @@ export default function RemisesBaremes({ annee, clients, produits, baremes }: an
                                     </SelectInput>
                                 </div>
                                 <div className="w-full sm:w-2/3 flex flex-col gap-2">
-                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Recherche Rapide</label>
+                                    <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Recherche Rapide</label>
                                     <div className="relative">
                                         <TextInput
                                             type="text"
@@ -114,12 +114,12 @@ export default function RemisesBaremes({ annee, clients, produits, baremes }: an
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
                                         />
-                                        <Search size={18} className="absolute left-3 top-3 text-gray-400" />
+                                        <Search size={18} className="absolute left-3 top-3 text-gray-400 dark:text-gray-500" />
                                     </div>
                                 </div>
                             </div>
-                            <div className="w-full lg:w-1/2 bg-emerald-50/50 border border-emerald-100 rounded-xl p-4 text-sm text-emerald-800 flex items-start gap-3">
-                                <Percent size={20} className="text-emerald-500 flex-shrink-0 mt-0.5" />
+                            <div className="w-full lg:w-1/2 bg-emerald-50/50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/30 rounded-xl p-4 text-sm text-emerald-800 dark:text-emerald-400 flex items-start gap-3">
+                                <Percent size={20} className="text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                                 <p className="font-medium">
                                     Saisissez le montant de la remise (DH par Tonne) accordée à chaque client pour chaque produit. Laissez vide si aucune remise.
                                 </p>
@@ -127,10 +127,10 @@ export default function RemisesBaremes({ annee, clients, produits, baremes }: an
                         </div>
 
                         {/* Îlot 2 : La Matrice (Tableau) */}
-                        <form onSubmit={submit} className="bg-white rounded-[1.5rem] shadow-sm overflow-hidden border border-gray-100 relative">
+                        <form onSubmit={submit} className="bg-white dark:bg-[#1f2430] rounded-[1.5rem] shadow-sm overflow-hidden border border-gray-100 dark:border-white/5 relative">
                             {processing && (
-                                <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-30 flex items-center justify-center rounded-[1.5rem]">
-                                    <div className="bg-[#29303d] text-white px-6 py-3 rounded-full font-bold flex items-center gap-3 shadow-xl">
+                                <div className="absolute inset-0 bg-white/60 dark:bg-[#1f2430]/60 backdrop-blur-sm z-30 flex items-center justify-center rounded-[1.5rem]">
+                                    <div className="bg-[#29303d] dark:bg-white text-white dark:text-[#29303d] px-6 py-3 rounded-full font-bold flex items-center gap-3 shadow-xl">
                                         <Loader2 size={18} className="animate-spin" />
                                         Enregistrement en cours...
                                     </div>
@@ -139,24 +139,24 @@ export default function RemisesBaremes({ annee, clients, produits, baremes }: an
 
                             <div className="overflow-x-auto">
                                 <table className="min-w-full text-left">
-                                    <thead className="bg-gray-50/50">
+                                    <thead className="bg-gray-50/50 dark:bg-[#181c25]/50">
                                         <tr>
-                                            <th className="px-6 py-5 border-b border-gray-100 text-xs font-bold text-[#29303d] uppercase tracking-wider sticky left-0 bg-gray-50/90 backdrop-blur-md z-20 shadow-[1px_0_0_0_#f3f4f6]">
+                                            <th className="px-6 py-5 border-b border-gray-100 dark:border-white/5 text-xs font-bold text-[#29303d] dark:text-white uppercase tracking-wider sticky left-0 bg-gray-50/90 dark:bg-[#181c25]/90 backdrop-blur-md z-20 shadow-[1px_0_0_0_#f3f4f6] dark:shadow-[1px_0_0_0_#ffffff0d]">
                                                 Client \ Produit (DH/T)
                                             </th>
                                             {produits.map((p: any) => (
-                                                <th key={p.id} className="px-4 py-5 border-b border-gray-100 text-center min-w-[140px]">
-                                                    <div className="text-[13px] font-bold text-[#29303d]">{p.nom}</div>
+                                                <th key={p.id} className="px-4 py-5 border-b border-gray-100 dark:border-white/5 text-center min-w-[140px]">
+                                                    <div className="text-[13px] font-bold text-[#29303d] dark:text-white">{p.nom}</div>
                                                 </th>
                                             ))}
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-gray-100">
+                                    <tbody className="divide-y divide-gray-100 dark:divide-white/5">
                                         {filteredClients.map((client: any) => {
                                             const rowData = matrix.find((r: any) => r.client_id === client.id);
                                             return (
-                                                <tr key={client.id} className="hover:bg-gray-50/50 transition-colors group">
-                                                    <td className="px-6 py-4 font-bold text-[15px] text-[#29303d] sticky left-0 bg-white group-hover:bg-gray-50/50 shadow-[1px_0_0_0_#f3f4f6] z-10 transition-colors">
+                                                <tr key={client.id} className="hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors group">
+                                                    <td className="px-6 py-4 font-bold text-[15px] text-[#29303d] dark:text-white sticky left-0 bg-white dark:bg-[#1f2430] group-hover:bg-gray-50/50 dark:group-hover:bg-[#181c25]/50 shadow-[1px_0_0_0_#f3f4f6] dark:shadow-[1px_0_0_0_#ffffff0d] z-10 transition-colors">
                                                         {client.nom_affichage}
                                                     </td>
                                                     {produits.map((p: any) => (
@@ -166,7 +166,7 @@ export default function RemisesBaremes({ annee, clients, produits, baremes }: an
                                                                 min="0"
                                                                 step="0.01"
                                                                 placeholder="-"
-                                                                className="w-full text-center font-bold text-emerald-700 h-11 bg-gray-50 border-transparent hover:border-emerald-200 focus:bg-white focus:ring-emerald-500 transition-all placeholder:text-gray-300 placeholder:font-medium"
+                                                                className="w-full text-center font-bold text-emerald-700 dark:text-emerald-400 h-11 bg-gray-50 dark:bg-[#181c25] border-transparent hover:border-emerald-200 dark:hover:border-emerald-900/50 focus:bg-white dark:focus:bg-[#1f2430] focus:ring-emerald-500 transition-all placeholder:text-gray-300 dark:placeholder:text-gray-600 placeholder:font-medium"
                                                                 value={rowData ? rowData.taux[p.id] : ''}
                                                                 onChange={(e) => handleTauxChange(client.id, p.id, e.target.value)}
                                                             />
@@ -190,7 +190,7 @@ export default function RemisesBaremes({ annee, clients, produits, baremes }: an
                             </div>
                             
                             {/* Actions (Footer du form) */}
-                            <div className="p-6 bg-gray-50/80 border-t border-gray-100 flex justify-end">
+                            <div className="p-6 bg-gray-50/80 dark:bg-[#181c25]/80 border-t border-gray-100 dark:border-white/5 flex justify-end">
                                 <PrimaryButton disabled={processing} className="!bg-[#29303d] hover:!bg-black gap-2 !h-12 !px-8">
                                     <Save size={18} />
                                     <span>Enregistrer les barèmes</span>

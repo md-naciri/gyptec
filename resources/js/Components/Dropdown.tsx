@@ -21,7 +21,7 @@ const Trigger = ({ children }: PropsWithChildren) => {
 const Content = ({
     align = 'right',
     width = '48',
-    contentClasses = 'py-1 bg-white',
+    contentClasses = 'py-1 bg-white dark:bg-[#181c25]',
     children,
 }: PropsWithChildren<{
     align?: 'left' | 'right';
@@ -53,7 +53,7 @@ const Content = ({
             leaveTo="opacity-0 scale-95"
         >
             <Menu.Items
-                className={`absolute z-50 mt-3 rounded-2xl shadow-xl border border-gray-100 outline-none ${alignmentClasses} ${widthClasses}`}
+                className={`absolute z-50 mt-3 rounded-2xl shadow-xl border border-gray-100 dark:border-white/5 outline-none ${alignmentClasses} ${widthClasses}`}
             >
                 <div className={`rounded-2xl p-2 ${contentClasses}`}>
                     {children}
@@ -75,7 +75,7 @@ const DropdownLink = ({
                     {...props}
                     className={
                         `block w-full px-4 py-2.5 rounded-xl text-start text-sm font-semibold transition duration-150 ease-in-out focus:outline-none ${
-                            active ? 'bg-gray-50 text-[#29303d]' : 'text-gray-500 hover:text-[#29303d]'
+                            active ? 'bg-gray-50 dark:bg-[#1f2430] text-[#29303d] dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-[#29303d] dark:hover:text-white'
                         } ${className}`
                     }
                 >

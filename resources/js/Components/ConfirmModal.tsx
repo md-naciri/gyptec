@@ -28,8 +28,8 @@ export default function ConfirmModal({
     hideCancel = false
 }: ConfirmModalProps) {
     
-    const iconColor = type === 'danger' ? 'text-red-600' : type === 'warning' ? 'text-yellow-600' : 'text-blue-600';
-    const iconBg = type === 'danger' ? 'bg-red-100' : type === 'warning' ? 'bg-yellow-100' : 'bg-blue-100';
+    const iconColor = type === 'danger' ? 'text-red-600 dark:text-red-400' : type === 'warning' ? 'text-yellow-600 dark:text-yellow-400' : 'text-blue-600 dark:text-blue-400';
+    const iconBg = type === 'danger' ? 'bg-red-100 dark:bg-red-900/30' : type === 'warning' ? 'bg-yellow-100 dark:bg-yellow-900/30' : 'bg-blue-100 dark:bg-blue-900/30';
     
     // For primary button we can override classes if it's danger
     const buttonClass = type === 'danger' 
@@ -44,11 +44,11 @@ export default function ConfirmModal({
                         <AlertTriangle className={`h-6 w-6 ${iconColor}`} aria-hidden="true" />
                     </div>
                     <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
-                        <h3 className="text-lg font-medium leading-6 text-gray-900" id="modal-title">
+                        <h3 className="text-lg font-medium leading-6 text-gray-900 dark:text-white" id="modal-title">
                             {title}
                         </h3>
                         <div className="mt-2">
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
                                 {message}
                             </p>
                         </div>

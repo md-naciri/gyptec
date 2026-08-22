@@ -58,20 +58,20 @@ export default function Index({ clients, produits, prixClients }: { clients: any
                 <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
                     
                     {/* La "Super Card" */}
-                    <div className="bg-[#ecebe8] rounded-[2rem] lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-12 shadow-sm border border-gray-200/50">
+                    <div className="bg-[#ecebe8] dark:bg-[#181c25] rounded-[2rem] lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-12 shadow-sm border border-gray-200/50 dark:border-white/5">
                         
                         {/* En-tête interne */}
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
                             <div>
-                                <h1 className="text-4xl lg:text-5xl font-black text-[#29303d] tracking-tight mb-2">Tarification par Client</h1>
-                                <p className="text-gray-600 text-lg">Matrice des prix personnalisés par client</p>
+                                <h1 className="text-4xl lg:text-5xl font-black text-[#29303d] dark:text-white tracking-tight mb-2">Tarification par Client</h1>
+                                <p className="text-gray-600 dark:text-gray-400 text-lg">Matrice des prix personnalisés par client</p>
                             </div>
                         </div>
 
                         {/* Îlot 1 : Toolbar (Recherche & Info) */}
-                        <div className="bg-white rounded-[1.5rem] p-6 lg:p-8 shadow-sm mb-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                        <div className="bg-white dark:bg-[#1f2430] rounded-[1.5rem] p-6 lg:p-8 shadow-sm mb-8 flex flex-col md:flex-row justify-between items-center gap-6 border border-gray-100 dark:border-white/5">
                             <div className="w-full md:w-1/3 flex flex-col gap-2 relative">
-                                <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Recherche Rapide</label>
+                                <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Recherche Rapide</label>
                                 <div className="relative">
                                     <TextInput
                                         type="text"
@@ -80,11 +80,11 @@ export default function Index({ clients, produits, prixClients }: { clients: any
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                     />
-                                    <Search size={18} className="absolute left-3 top-3 text-gray-400" />
+                                    <Search size={18} className="absolute left-3 top-3 text-gray-400 dark:text-gray-500" />
                                 </div>
                             </div>
-                            <div className="w-full md:w-2/3 bg-blue-50/50 border border-blue-100 rounded-xl p-4 text-sm text-blue-800 flex items-start gap-3">
-                                <AlertCircle size={20} className="text-blue-500 flex-shrink-0 mt-0.5" />
+                            <div className="w-full md:w-2/3 bg-blue-50/50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 rounded-xl p-4 text-sm text-blue-800 dark:text-blue-300 flex items-start gap-3">
+                                <AlertCircle size={20} className="text-blue-500 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                                 <p className="font-medium">
                                     Laissez une case vide pour utiliser le prix par défaut du produit.<br/>
                                     <strong className="font-bold">Appuyez sur Entrée</strong> (ou cliquez en dehors de la case) pour sauvegarder instantanément vos modifications.
@@ -93,10 +93,10 @@ export default function Index({ clients, produits, prixClients }: { clients: any
                         </div>
 
                         {/* Îlot 2 : La Matrice (Tableau) */}
-                        <div className="bg-white rounded-[1.5rem] shadow-sm overflow-hidden border border-gray-100 relative">
+                        <div className="bg-white dark:bg-[#1f2430] rounded-[1.5rem] shadow-sm overflow-hidden border border-gray-100 dark:border-white/5 relative">
                             {saving && (
-                                <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-30 flex items-center justify-center rounded-[1.5rem]">
-                                    <div className="bg-[#29303d] text-white px-6 py-3 rounded-full font-bold flex items-center gap-3 shadow-xl">
+                                <div className="absolute inset-0 bg-white/60 dark:bg-[#1f2430]/60 backdrop-blur-sm z-30 flex items-center justify-center rounded-[1.5rem]">
+                                    <div className="bg-[#29303d] dark:bg-white text-white dark:text-[#29303d] px-6 py-3 rounded-full font-bold flex items-center gap-3 shadow-xl">
                                         <Loader2 size={18} className="animate-spin" />
                                         Sauvegarde en cours...
                                     </div>
@@ -105,23 +105,23 @@ export default function Index({ clients, produits, prixClients }: { clients: any
 
                             <div className="overflow-x-auto">
                                 <table className="min-w-full text-left">
-                                    <thead className="bg-gray-50/50">
+                                    <thead className="bg-gray-50/50 dark:bg-[#181c25]/50">
                                         <tr>
-                                            <th className="px-6 py-5 border-b border-gray-100 text-xs font-bold text-[#29303d] uppercase tracking-wider sticky left-0 bg-gray-50/90 backdrop-blur-md z-20 shadow-[1px_0_0_0_#f3f4f6]">
+                                            <th className="px-6 py-5 border-b border-gray-100 dark:border-white/5 text-xs font-bold text-[#29303d] dark:text-white uppercase tracking-wider sticky left-0 bg-gray-50/90 dark:bg-[#181c25]/90 backdrop-blur-md z-20 shadow-[1px_0_0_0_#f3f4f6] dark:shadow-[1px_0_0_0_#ffffff0d]">
                                                 Client \ Produit
                                             </th>
                                             {produits.map(produit => (
-                                                <th key={produit.id} className="px-4 py-5 border-b border-gray-100 text-center min-w-[140px]">
-                                                    <div className="text-[13px] font-bold text-[#29303d] mb-1">{produit.nom}</div>
-                                                    <div className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Défaut: {produit.prix_defaut}</div>
+                                                <th key={produit.id} className="px-4 py-5 border-b border-gray-100 dark:border-white/5 text-center min-w-[140px]">
+                                                    <div className="text-[13px] font-bold text-[#29303d] dark:text-white mb-1">{produit.nom}</div>
+                                                    <div className="text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Défaut: {produit.prix_defaut}</div>
                                                 </th>
                                             ))}
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-gray-100">
+                                    <tbody className="divide-y divide-gray-100 dark:divide-white/5">
                                         {filteredClients.map(client => (
-                                            <tr key={client.id} className="hover:bg-gray-50/50 transition-colors group">
-                                                <td className="px-6 py-4 font-bold text-[15px] text-[#29303d] sticky left-0 bg-white group-hover:bg-gray-50/50 shadow-[1px_0_0_0_#f3f4f6] z-10 transition-colors">
+                                            <tr key={client.id} className="hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors group">
+                                                <td className="px-6 py-4 font-bold text-[15px] text-[#29303d] dark:text-white sticky left-0 bg-white dark:bg-[#1f2430] group-hover:bg-gray-50/50 dark:group-hover:bg-[#181c25]/50 shadow-[1px_0_0_0_#f3f4f6] dark:shadow-[1px_0_0_0_#ffffff0d] z-10 transition-colors">
                                                     {client.nom}
                                                 </td>
                                                 {produits.map(produit => (
@@ -130,7 +130,7 @@ export default function Index({ clients, produits, prixClients }: { clients: any
                                                             type="number"
                                                             step="0.01"
                                                             placeholder={produit.prix_defaut.toString()}
-                                                            className="w-full text-center font-bold text-[#29303d] h-11 bg-gray-50 border-transparent hover:border-gray-200 focus:bg-white transition-all placeholder:text-gray-300 placeholder:font-medium"
+                                                            className="w-full text-center font-bold text-[#29303d] dark:text-white h-11 bg-gray-50 dark:bg-[#181c25] border-transparent hover:border-gray-200 dark:hover:border-white/10 focus:bg-white dark:focus:bg-[#1f2430] transition-all placeholder:text-gray-300 dark:placeholder:text-gray-600 placeholder:font-medium"
                                                             value={getPrice(client.id, produit.id)}
                                                             onChange={(e) => handlePriceChange(client.id, produit.id, e.target.value)}
                                                             onBlur={() => handleSave(client.id, produit.id)}

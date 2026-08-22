@@ -37,7 +37,7 @@ export default forwardRef(function SelectInput(
             <Listbox value={value} onChange={handleChange}>
                 {({ open }) => (
                     <>
-                        <Listbox.Button className={`relative w-full cursor-default rounded-xl bg-gray-50/50 h-11 pl-4 pr-10 text-left text-sm shadow-sm border border-gray-200 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 focus:bg-white hover:border-gray-300 ${className}`}>
+                        <Listbox.Button className={`relative w-full cursor-default rounded-xl bg-gray-50/50 dark:bg-[#1f2430] h-11 pl-4 pr-10 text-left text-sm shadow-sm border border-gray-200 dark:border-white/10 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 dark:focus:border-primary-500 focus:bg-white dark:focus:bg-[#1a1f2b] hover:border-gray-300 dark:hover:border-white/20 dark:text-gray-100 ${className}`}>
                             <span className="block truncate">{selectedOption?.label || 'Sélectionner...'}</span>
                             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                                 <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
@@ -47,14 +47,14 @@ export default forwardRef(function SelectInput(
                         <Listbox.Options 
                             anchor="bottom start" 
                             transition
-                            className="z-50 max-h-60 min-w-[var(--button-width)] overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm transition ease-in duration-100 data-[leave]:data-[closed]:opacity-0"
+                            className="z-50 max-h-60 min-w-[var(--button-width)] overflow-auto rounded-md bg-white dark:bg-[#181c25] py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 dark:ring-white/10 focus:outline-none sm:text-sm transition ease-in duration-100 data-[leave]:data-[closed]:opacity-0"
                         >
                             {options.map((option, idx) => (
                                 <Listbox.Option
                                     key={idx}
                                     className={({ active }) =>
                                         `relative cursor-default select-none py-2 pl-8 pr-3 transition-colors duration-150 ${
-                                            active ? 'bg-primary-50 text-primary-900' : 'text-gray-900'
+                                            active ? 'bg-primary-50 dark:bg-[#1f2430] text-primary-900 dark:text-white' : 'text-gray-900 dark:text-gray-300'
                                         }`
                                     }
                                     value={option.value}
@@ -67,7 +67,7 @@ export default forwardRef(function SelectInput(
                                             {selected ? (
                                                 <span
                                                     className={`absolute inset-y-0 left-0 flex items-center pl-2 ${
-                                                        active ? 'text-primary-700' : 'text-primary-600'
+                                                        active ? 'text-primary-700 dark:text-primary-400' : 'text-primary-600 dark:text-primary-500'
                                                     }`}
                                                 >
                                                     <Check className="h-4 w-4" aria-hidden="true" />
