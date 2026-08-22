@@ -1,5 +1,6 @@
 import React from 'react';
 import Select, { components } from 'react-select';
+import { useThemeMode } from '@/Hooks/useThemeMode';
 
 interface Client {
     id: number;
@@ -42,6 +43,8 @@ export default function ClientSelect({
 
     // Trouver l'option sélectionnée actuelle
     const selectedOption = options.find(opt => opt.value.toString() === value?.toString()) || null;
+    
+    const isDarkMode = useThemeMode();
 
     return (
         <Select
@@ -59,14 +62,41 @@ export default function ClientSelect({
             styles={{
                 control: (base, state) => ({
                     ...base,
-                    borderColor: state.isFocused ? '#3661A0' : '#E5E7EB', // primary-500 on focus, else gray-200
+                    borderColor: state.isFocused ? '#3661A0' : (isDarkMode ? '#ffffff0d' : '#E5E7EB'), // primary-500 on focus, else white/5 or gray-200
                     borderRadius: '0.75rem', // rounded-xl
                     minHeight: '44px', // h-11
                     boxShadow: state.isFocused ? '0 0 0 2px rgba(54, 97, 160, 0.2)' : '0 1px 2px 0 rgba(0, 0, 0, 0.05)', 
-                    backgroundColor: state.isFocused ? '#ffffff' : '#f9fafb', // gray-50/50
+                    backgroundColor: state.isFocused ? (isDarkMode ? '#1f2430' : '#ffffff') : (isDarkMode ? '#1f2430' : '#f9fafb'), 
                     '&:hover': {
-                        borderColor: state.isFocused ? '#3661A0' : '#D1D5DB'
+                        borderColor: state.isFocused ? '#3661A0' : (isDarkMode ? '#ffffff1a' : '#D1D5DB')
                     }
+                }),
+                menu: (base) => ({
+                    ...base,
+                    backgroundColor: isDarkMode ? '#1f2430' : '#ffffff',
+                    border: isDarkMode ? '1px solid #ffffff0d' : '1px solid #E5E7EB',
+                }),
+                option: (base, state) => ({
+                    ...base,
+                    backgroundColor: state.isSelected 
+                        ? (isDarkMode ? '#3661A0' : '#3661A0') 
+                        : state.isFocused 
+                            ? (isDarkMode ? '#ffffff0d' : '#f3f4f6') 
+                            : 'transparent',
+                    color: state.isSelected ? '#ffffff' : (isDarkMode ? '#D1D5DB' : '#374151'),
+                    '&:active': {
+                        backgroundColor: isDarkMode ? '#3661A0' : '#3661A0',
+                    }
+                }),
+                singleValue: (base) => ({
+                    ...base,
+                    color: isDarkMode ? '#ffffff' : '#374151',
+                }),
+                input: (base) => ({
+                    ...base,
+                    color: isDarkMode ? '#ffffff' : '#374151',
+                    margin: '0',
+                    padding: '0',
                 }),
                 valueContainer: (base) => ({
                     ...base,
@@ -77,11 +107,6 @@ export default function ClientSelect({
                 indicatorsContainer: (base) => ({
                     ...base,
                     height: '44px',
-                }),
-                input: (base) => ({
-                    ...base,
-                    margin: '0',
-                    padding: '0',
                 })
             }}
         />

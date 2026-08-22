@@ -45,13 +45,13 @@ export default function Create({ clients, preselectedClientId }: { clients: any[
 
                     <form onSubmit={submit}>
                         {/* La "Super Card" */}
-                        <div className="bg-[#ecebe8] rounded-[2rem] lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-12 shadow-sm border border-gray-200/50">
+                        <div className="bg-[#ecebe8] dark:bg-[#181c25] rounded-[2rem] lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-12 shadow-sm border border-gray-200/50 dark:border-white/5">
                             
                             {/* En-tête interne */}
                             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
                                 <div>
-                                    <h1 className="text-4xl lg:text-5xl font-black text-[#29303d] tracking-tight mb-2">Nouvel Encaissement</h1>
-                                    <p className="text-gray-600 text-lg">Enregistrer un nouveau paiement reçu</p>
+                                    <h1 className="text-4xl lg:text-5xl font-black text-[#29303d] dark:text-white tracking-tight mb-2">Nouvel Encaissement</h1>
+                                    <p className="text-gray-600 dark:text-gray-400 text-lg">Enregistrer un nouveau paiement reçu</p>
                                 </div>
                                 <div className="w-16 h-16 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-lg shadow-emerald-200">
                                     <Wallet size={32} />
@@ -59,7 +59,7 @@ export default function Create({ clients, preselectedClientId }: { clients: any[
                             </div>
 
                             {/* Îlot Principal du formulaire */}
-                            <div className="bg-white rounded-[1.5rem] p-6 lg:p-10 shadow-sm border border-gray-100">
+                            <div className="bg-white dark:bg-[#1f2430] rounded-[1.5rem] p-6 lg:p-10 shadow-sm border border-gray-100 dark:border-white/5">
                                 <div className="space-y-8">
                                     
                                     {/* Section 1 : Client & Montant */}
@@ -101,7 +101,7 @@ export default function Create({ clients, preselectedClientId }: { clients: any[
                                                 type="number"
                                                 step="0.01"
                                                 min="0.01"
-                                                className="block w-full h-12 text-xl font-black text-emerald-600 focus:ring-emerald-500 focus:border-emerald-500"
+                                                className="block w-full h-12 text-xl font-black text-emerald-600 dark:text-emerald-400 dark:bg-[#181c25] dark:border-white/10 focus:ring-emerald-500 focus:border-emerald-500"
                                                 value={data.montant}
                                                 onChange={e => setData('montant', e.target.value)}
                                                 placeholder="0.00"
@@ -111,7 +111,7 @@ export default function Create({ clients, preselectedClientId }: { clients: any[
                                         </div>
                                     </div>
 
-                                    <div className="w-full h-px bg-gray-100 my-4"></div>
+                                    <div className="w-full h-px bg-gray-100 dark:bg-white/5 my-4"></div>
 
                                     {/* Section 2 : Mode de paiement & Réf */}
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -138,7 +138,7 @@ export default function Create({ clients, preselectedClientId }: { clients: any[
                                             <TextInput
                                                 id="reference"
                                                 type="text"
-                                                className="block w-full h-12"
+                                                className="block w-full h-12 dark:bg-[#181c25] dark:border-white/10 dark:text-white"
                                                 value={data.reference}
                                                 onChange={e => setData('reference', e.target.value)}
                                                 placeholder={isChequeOuEffet ? "N° chèque / effet obligatoire" : "Optionnel"}
@@ -171,25 +171,25 @@ export default function Create({ clients, preselectedClientId }: { clients: any[
                                     {/* Alertes de statut automatiques */}
                                     <div className="mt-4">
                                         {isChequeOuEffet ? (
-                                            <div className="bg-amber-50 border border-amber-100 p-4 rounded-xl flex items-start gap-3">
+                                            <div className="bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/30 p-4 rounded-xl flex items-start gap-3">
                                                 <Clock size={20} className="text-amber-500 flex-shrink-0 mt-0.5" />
                                                 <div>
-                                                    <h4 className="font-bold text-amber-800 text-sm">Statut automatique : En attente</h4>
-                                                    <p className="text-amber-700 text-sm mt-1">Cet encaissement sera créé avec le statut "En attente" jusqu'à sa validation manuelle.</p>
+                                                    <h4 className="font-bold text-amber-800 dark:text-amber-400 text-sm">Statut automatique : En attente</h4>
+                                                    <p className="text-amber-700 dark:text-amber-300 text-sm mt-1">Cet encaissement sera créé avec le statut "En attente" jusqu'à sa validation manuelle.</p>
                                                 </div>
                                             </div>
                                         ) : (
-                                            <div className="bg-emerald-50 border border-emerald-100 p-4 rounded-xl flex items-start gap-3">
+                                            <div className="bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/30 p-4 rounded-xl flex items-start gap-3">
                                                 <CheckCircle2 size={20} className="text-emerald-500 flex-shrink-0 mt-0.5" />
                                                 <div>
-                                                    <h4 className="font-bold text-emerald-800 text-sm">Statut automatique : Encaissé</h4>
-                                                    <p className="text-emerald-700 text-sm mt-1">Cet encaissement sera considéré comme directement valide et déduit du solde client immédiatement.</p>
+                                                    <h4 className="font-bold text-emerald-800 dark:text-emerald-400 text-sm">Statut automatique : Encaissé</h4>
+                                                    <p className="text-emerald-700 dark:text-emerald-300 text-sm mt-1">Cet encaissement sera considéré comme directement valide et déduit du solde client immédiatement.</p>
                                                 </div>
                                             </div>
                                         )}
                                     </div>
 
-                                    <div className="w-full h-px bg-gray-100 my-4"></div>
+                                    <div className="w-full h-px bg-gray-100 dark:bg-white/5 my-4"></div>
 
                                     {/* Section 3 : Notes */}
                                     <div>
@@ -199,7 +199,7 @@ export default function Create({ clients, preselectedClientId }: { clients: any[
                                         </div>
                                         <textarea
                                             id="notes"
-                                            className="block w-full border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 rounded-xl shadow-sm text-[15px]"
+                                            className="block w-full border-gray-200 dark:border-white/10 dark:bg-[#181c25] dark:text-white focus:border-emerald-500 focus:ring-emerald-500 rounded-xl shadow-sm text-[15px]"
                                             rows={3}
                                             value={data.notes}
                                             onChange={e => setData('notes', e.target.value)}
@@ -212,7 +212,7 @@ export default function Create({ clients, preselectedClientId }: { clients: any[
                             
                             {/* Actions du formulaire */}
                             <div className="mt-10 flex flex-col sm:flex-row justify-end items-center gap-4">
-                                <Link href={route('encaissements.index')} className="w-full sm:w-auto px-6 py-3 bg-white border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 hover:text-gray-900 font-bold transition-colors text-center">
+                                <Link href={route('encaissements.index')} className="w-full sm:w-auto px-6 py-3 bg-white dark:bg-[#1f2430] border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white font-bold transition-colors text-center">
                                     Annuler
                                 </Link>
                                 <PrimaryButton disabled={processing} className="w-full sm:w-auto !bg-[#29303d] hover:!bg-black !h-12 !px-8 !rounded-xl gap-2 text-base">

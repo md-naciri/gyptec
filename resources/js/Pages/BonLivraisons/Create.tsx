@@ -111,17 +111,17 @@ export default function Create({ clients, produits, prixClients }: { clients: an
 
                     <form onSubmit={submit}>
                         {/* La "Super Card" */}
-                        <div className="bg-[#ecebe8] rounded-[2rem] lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-12 shadow-sm border border-gray-200/50">
+                        <div className="bg-[#ecebe8] dark:bg-[#181c25] rounded-[2rem] lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-12 shadow-sm border border-gray-200/50 dark:border-white/5">
                             
                             {/* En-tête interne */}
                             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
                                 <div>
-                                    <h1 className="text-4xl lg:text-5xl font-black text-[#29303d] tracking-tight mb-2">Saisie d'un Bon de Livraison</h1>
-                                    <p className="text-gray-600 text-lg">Enregistrer une nouvelle expédition client</p>
+                                    <h1 className="text-4xl lg:text-5xl font-black text-[#29303d] dark:text-white tracking-tight mb-2">Saisie d'un Bon de Livraison</h1>
+                                    <p className="text-gray-600 dark:text-gray-400 text-lg">Enregistrer une nouvelle expédition client</p>
                                 </div>
-                                <div className="bg-indigo-50 px-6 py-3 rounded-full border border-indigo-100 flex items-center gap-3">
-                                    <span className="text-sm font-bold text-indigo-800 uppercase tracking-wider">Total Estimé</span>
-                                    <span className="text-2xl font-black text-indigo-600">{totalBl.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} <span className="text-sm">DH</span></span>
+                                <div className="bg-indigo-50 dark:bg-indigo-900/10 px-6 py-3 rounded-full border border-indigo-100 dark:border-indigo-900/30 flex items-center gap-3">
+                                    <span className="text-sm font-bold text-indigo-800 dark:text-indigo-300 uppercase tracking-wider">Total Estimé</span>
+                                    <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">{totalBl.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} <span className="text-sm">DH</span></span>
                                 </div>
                             </div>
 
@@ -130,12 +130,12 @@ export default function Create({ clients, produits, prixClients }: { clients: an
                                 {/* COLONNE GAUCHE : Infos Générales */}
                                 <div className="xl:col-span-1 space-y-8">
                                     {/* Îlot 1 : Infos Générales */}
-                                    <div className="bg-white rounded-[1.5rem] p-6 lg:p-8 shadow-sm border border-gray-100">
+                                    <div className="bg-white dark:bg-[#1f2430] rounded-[1.5rem] p-6 lg:p-8 shadow-sm border border-gray-100 dark:border-white/5">
                                         <div className="flex items-center gap-3 mb-6">
-                                            <div className="w-10 h-10 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center">
+                                            <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-gray-400 flex items-center justify-center">
                                                 <FileText size={20} />
                                             </div>
-                                            <h3 className="text-xl font-bold text-[#29303d]">Détails du document</h3>
+                                            <h3 className="text-xl font-bold text-[#29303d] dark:text-white">Détails du document</h3>
                                         </div>
                                         
                                         <div className="space-y-5">
@@ -165,12 +165,12 @@ export default function Create({ clients, produits, prixClients }: { clients: an
                                     </div>
 
                                     {/* Îlot 2 : Logistique */}
-                                    <div className="bg-white rounded-[1.5rem] p-6 lg:p-8 shadow-sm border border-gray-100">
+                                    <div className="bg-white dark:bg-[#1f2430] rounded-[1.5rem] p-6 lg:p-8 shadow-sm border border-gray-100 dark:border-white/5">
                                         <div className="flex items-center gap-3 mb-6">
-                                            <div className="w-10 h-10 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center">
+                                            <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-gray-400 flex items-center justify-center">
                                                 <Truck size={20} />
                                             </div>
-                                            <h3 className="text-xl font-bold text-[#29303d]">Logistique & Transport</h3>
+                                            <h3 className="text-xl font-bold text-[#29303d] dark:text-white">Logistique & Transport</h3>
                                         </div>
                                         
                                         <div className="space-y-5">
@@ -195,18 +195,18 @@ export default function Create({ clients, produits, prixClients }: { clients: an
 
                                 {/* COLONNE DROITE : Lignes de BL */}
                                 <div className="xl:col-span-2">
-                                    <div className="bg-white rounded-[1.5rem] p-6 lg:p-8 shadow-sm border border-gray-100">
+                                    <div className="bg-white dark:bg-[#1f2430] rounded-[1.5rem] p-6 lg:p-8 shadow-sm border border-gray-100 dark:border-white/5">
                                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                                                <div className="w-10 h-10 rounded-full bg-indigo-50 dark:bg-indigo-900/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
                                                     <Box size={20} />
                                                 </div>
-                                                <h3 className="text-xl font-bold text-[#29303d]">Lignes de Vente</h3>
+                                                <h3 className="text-xl font-bold text-[#29303d] dark:text-white">Lignes de Vente</h3>
                                             </div>
                                             <button 
                                                 type="button" 
                                                 onClick={addLigne} 
-                                                className="flex items-center gap-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 hover:text-indigo-800 px-4 py-2 rounded-xl text-sm font-bold transition-colors"
+                                                className="flex items-center gap-2 bg-indigo-50 dark:bg-indigo-900/10 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 hover:text-indigo-800 dark:hover:text-indigo-200 px-4 py-2 rounded-xl text-sm font-bold transition-colors"
                                             >
                                                 <Plus size={16} />
                                                 <span>Ajouter une ligne</span>
@@ -214,7 +214,7 @@ export default function Create({ clients, produits, prixClients }: { clients: an
                                         </div>
 
                                         {typeof errors.lignes === 'string' && (
-                                            <div className="bg-red-50 text-red-600 p-4 rounded-xl mb-6 font-medium text-sm flex items-center gap-2">
+                                            <div className="bg-red-50 dark:bg-red-900/10 text-red-600 dark:text-red-400 p-4 rounded-xl mb-6 font-medium text-sm flex items-center gap-2">
                                                 <AlertCircle size={18} />
                                                 {errors.lignes}
                                             </div>
@@ -222,13 +222,13 @@ export default function Create({ clients, produits, prixClients }: { clients: an
 
                                         <div className="space-y-4">
                                             {data.lignes.map((ligne, index) => (
-                                                <div key={ligne.id} className="relative p-6 bg-gray-50/50 border border-gray-100 rounded-2xl group hover:border-gray-200 transition-colors">
+                                                <div key={ligne.id} className="relative p-6 bg-gray-50/50 dark:bg-[#181c25]/50 border border-gray-100 dark:border-white/5 rounded-2xl group hover:border-gray-200 dark:hover:border-white/10 transition-colors">
                                                     
                                                     {data.lignes.length > 1 && (
                                                         <button 
                                                             type="button" 
                                                             onClick={() => removeLigne(index)}
-                                                            className="absolute -right-3 -top-3 bg-white border border-gray-200 text-red-500 rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-50 hover:text-red-600 hover:border-red-100 shadow-sm transition-colors z-10"
+                                                            className="absolute -right-3 -top-3 bg-white dark:bg-[#1f2430] border border-gray-200 dark:border-white/10 text-red-500 dark:text-red-400 rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-50 dark:hover:bg-red-900/10 hover:text-red-600 dark:hover:text-red-300 hover:border-red-100 dark:hover:border-red-900/30 shadow-sm transition-colors z-10"
                                                             title="Supprimer la ligne"
                                                         >
                                                             <X size={16} strokeWidth={3} />
@@ -281,7 +281,7 @@ export default function Create({ clients, produits, prixClients }: { clients: an
                                                                 <InputLabel value="Qté (T) *" className="font-bold text-gray-500 uppercase tracking-wider text-[10px] mb-1.5" />
                                                                 <input 
                                                                     type="number" step="0.01" min="0.01" required
-                                                                    className="block w-full h-11 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm sm:text-sm font-bold text-[#29303d]"
+                                                                    className="block w-full h-11 border-gray-300 dark:border-white/10 dark:bg-[#181c25] focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm sm:text-sm font-bold text-[#29303d] dark:text-white"
                                                                     value={ligne.quantite}
                                                                     onChange={e => handleLigneChange(index, 'quantite', e.target.value)}
                                                                 />
@@ -291,7 +291,7 @@ export default function Create({ clients, produits, prixClients }: { clients: an
                                                                 <InputLabel value="Prix U. (DH) *" className="font-bold text-gray-500 uppercase tracking-wider text-[10px] mb-1.5" />
                                                                 <input 
                                                                     type="number" step="0.01" min="0" required
-                                                                    className={`block w-full h-11 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm sm:text-sm font-bold ${ligne.type === 'echantillon' ? 'bg-gray-200 text-gray-500' : 'text-indigo-600'}`}
+                                                                    className={`block w-full h-11 border-gray-300 dark:border-white/10 dark:bg-[#181c25] focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm sm:text-sm font-bold ${ligne.type === 'echantillon' ? 'bg-gray-200 dark:bg-white/5 text-gray-500 dark:text-gray-400' : 'text-indigo-600 dark:text-indigo-400'}`}
                                                                     value={ligne.prix_unitaire}
                                                                     onChange={e => handleLigneChange(index, 'prix_unitaire', e.target.value)}
                                                                     disabled={ligne.type === 'echantillon'}
@@ -301,9 +301,9 @@ export default function Create({ clients, produits, prixClients }: { clients: an
                                                             
                                                             {/* Sous-total de la ligne */}
                                                             <div className="col-span-1 md:col-span-3 mt-2 flex justify-end items-center">
-                                                                <div className="bg-white px-4 py-2 rounded-lg border border-gray-100 flex items-center gap-2">
+                                                                <div className="bg-white dark:bg-[#1f2430] px-4 py-2 rounded-lg border border-gray-100 dark:border-white/5 flex items-center gap-2">
                                                                     <span className="text-xs font-bold text-gray-400 uppercase">Sous-total :</span>
-                                                                    <span className="font-black text-indigo-700">
+                                                                    <span className="font-black text-indigo-700 dark:text-indigo-400">
                                                                         {ligne.quantite && ligne.prix_unitaire && ligne.type === 'vente' 
                                                                             ? (parseFloat(ligne.quantite) * parseFloat(ligne.prix_unitaire)).toLocaleString('fr-FR', { minimumFractionDigits: 2 }) + ' DH'
                                                                             : (ligne.type === 'echantillon' ? '0.00 DH' : '-')}
@@ -322,7 +322,7 @@ export default function Create({ clients, produits, prixClients }: { clients: an
                             
                             {/* Actions du formulaire */}
                             <div className="mt-10 flex flex-col sm:flex-row justify-end items-center gap-4">
-                                <Link href={route('bon-livraisons.index')} className="w-full sm:w-auto px-6 py-3 bg-white border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 hover:text-gray-900 font-bold transition-colors text-center">
+                                <Link href={route('bon-livraisons.index')} className="w-full sm:w-auto px-6 py-3 bg-white dark:bg-[#1f2430] border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white font-bold transition-colors text-center">
                                     Annuler
                                 </Link>
                                 <PrimaryButton disabled={processing} className="w-full sm:w-auto !bg-[#29303d] hover:!bg-black !h-12 !px-8 !rounded-xl gap-2 text-base">
