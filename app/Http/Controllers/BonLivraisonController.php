@@ -29,12 +29,18 @@ class BonLivraisonController extends Controller
         if ($request->has('date_fin') && $request->date_fin) {
             $query->whereDate('date', '<=', $request->date_fin);
         }
+        if ($request->has('client_id') && $request->client_id) {
+            $query->whereHas('lignes', function($q) use ($request) {
+                $q->where('client_id', $request->client_id);
+            });
+        }
 
         $bons = $query->paginate(20);
 
         return Inertia::render('BonLivraisons/Index', [
             'bons' => $bons,
-            'filters' => $request->only(['camion', 'numero', 'date_debut', 'date_fin']),
+            'clients' => Client::where('actif', true)->orderBy('nom')->get(),
+            'filters' => $request->only(['camion', 'numero', 'date_debut', 'date_fin', 'client_id']),
         ]);
     }
 
@@ -105,7 +111,63 @@ class BonLivraisonController extends Controller
 
     public function edit(BonLivraison $bonLivraison)
     {
-        return redirect()->route('bon-livraisons.show', $bonLivraison->id); // Simplify for now
+        $bonLivraison->load('lignes');
+        
+        return Inertia::render('BonLivraisons/Edit', [
+            'bonLivraison' => $bonLivraison,
+            'clients' => Client::where('actif', true)->orderBy('nom')->get(),
+            'produits' => Produit::where('actif', true)->orderBy('nom')->get(),
+            'prixClients' => PrixClient::all(),
+        ]);
+    }
+
+    public function update(Request $request, BonLivraison $bonLivraison)
+    {
+        $validated = $request->validate([
+            'date' => 'required|date',
+            'numero_bl' => 'nullable|string|unique:bon_livraisons,numero_bl,' . $bonLivraison->id,
+            'matricule_camion' => 'nullable|string|max:255',
+            'destination' => 'nullable|string|max:255',
+            'zone' => 'nullable|string|max:255',
+            'lignes' => 'required|array|min:1',
+            'lignes.*.client_id' => 'required|exists:clients,id',
+            'lignes.*.produit_id' => 'required|exists:produits,id',
+            'lignes.*.quantite' => 'required|numeric|min:0.01',
+            'lignes.*.type' => 'required|in:vente,echantillon',
+            'lignes.*.prix_unitaire' => 'required|numeric|min:0',
+        ]);
+
+        DB::transaction(function () use ($validated, $bonLivraison) {
+            $bonLivraison->update([
+                'date' => $validated['date'],
+                'numero_bl' => $validated['numero_bl'],
+                'matricule_camion' => $validated['matricule_camion'],
+                'destination' => $validated['destination'],
+                'zone' => $validated['zone'],
+            ]);
+
+            // Delete old lignes and create new ones (simplest approach for full updates)
+            $bonLivraison->lignes()->delete();
+
+            foreach ($validated['lignes'] as $ligne) {
+                $montant = 0;
+                if ($ligne['type'] === 'vente') {
+                    $montant = $ligne['quantite'] * $ligne['prix_unitaire'];
+                }
+
+                VenteLigne::create([
+                    'bon_livraison_id' => $bonLivraison->id,
+                    'client_id' => $ligne['client_id'],
+                    'produit_id' => $ligne['produit_id'],
+                    'quantite' => $ligne['quantite'],
+                    'type' => $ligne['type'],
+                    'prix_unitaire' => $ligne['prix_unitaire'],
+                    'montant' => $montant,
+                ]);
+            }
+        });
+
+        return redirect()->route('bon-livraisons.index')->with('success', 'Bon de livraison modifié.');
     }
 
     public function destroy(BonLivraison $bonLivraison)

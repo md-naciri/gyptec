@@ -1,11 +1,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import PageHeader from '@/Components/PageHeader';
-import FilterCard from '@/Components/FilterCard';
 import TextInput from '@/Components/TextInput';
 import SelectInput from '@/Components/SelectInput';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Head, useForm, router } from '@inertiajs/react';
 import { useState } from 'react';
+import { Search, Loader2, Save, AlertCircle, Percent } from 'lucide-react';
 
 export default function RemisesBaremes({ annee, clients, produits, baremes }: any) {
     const [selectedAnnee, setSelectedAnnee] = useState(annee);
@@ -72,74 +71,104 @@ export default function RemisesBaremes({ annee, clients, produits, baremes }: an
     return (
         <AuthenticatedLayout>
             <Head title="Barèmes Remises" />
-            <PageHeader 
-                title="Paramétrage des Barèmes de Remise" 
-                subtitle="Définition des objectifs et taux de remise annuels par client"
-            />
 
-            <div className="py-4">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div className="py-8 lg:py-12">
+                <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
                     
-                    {/* Filtre Année et Recherche */}
-                    <FilterCard className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                        <div className="flex items-center gap-4">
-                            <label className="font-medium text-gray-700 whitespace-nowrap">Année de référence :</label>
-                            <SelectInput 
-                                className="w-full sm:w-auto"
-                                value={selectedAnnee}
-                                onChange={(e: any) => {
-                                    setSelectedAnnee(e.target.value);
-                                    router.get(route('remises.baremes'), { annee: e.target.value });
-                                }}
-                            >
-                                {[2024, 2025, 2026, 2027, 2028].map(y => (
-                                    <option key={y} value={y}>{y}</option>
-                                ))}
-                            </SelectInput>
+                    {/* La "Super Card" */}
+                    <div className="bg-[#ecebe8] rounded-[2rem] lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-12 shadow-sm border border-gray-200/50">
+                        
+                        {/* En-tête interne */}
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+                            <div>
+                                <h1 className="text-4xl lg:text-5xl font-black text-[#29303d] tracking-tight mb-2">Barèmes de Remise</h1>
+                                <p className="text-gray-600 text-lg">Définition des objectifs et taux de remise annuels par client</p>
+                            </div>
                         </div>
-                        <div className="w-full sm:flex-1 sm:max-w-md sm:ml-auto">
-                            <TextInput
-                                type="text"
-                                placeholder="Rechercher un client..."
-                                className="w-full"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                        </div>
-                    </FilterCard>
 
-                    <div className="bg-white shadow-sm sm:rounded-lg overflow-hidden">
-                        <form onSubmit={submit}>
+                        {/* Îlot 1 : Toolbar (Filtres & Info) */}
+                        <div className="bg-white rounded-[1.5rem] p-6 lg:p-8 shadow-sm mb-8 flex flex-col lg:flex-row justify-between items-center gap-6">
+                            <div className="w-full lg:w-1/2 flex flex-col sm:flex-row gap-4">
+                                <div className="w-full sm:w-1/3 flex flex-col gap-2">
+                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Année</label>
+                                    <SelectInput 
+                                        className="w-full h-11"
+                                        value={selectedAnnee}
+                                        onChange={(e: any) => {
+                                            setSelectedAnnee(e.target.value);
+                                            router.get(route('remises.baremes'), { annee: e.target.value });
+                                        }}
+                                    >
+                                        {[2024, 2025, 2026, 2027, 2028].map(y => (
+                                            <option key={y} value={y}>{y}</option>
+                                        ))}
+                                    </SelectInput>
+                                </div>
+                                <div className="w-full sm:w-2/3 flex flex-col gap-2">
+                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Recherche Rapide</label>
+                                    <div className="relative">
+                                        <TextInput
+                                            type="text"
+                                            placeholder="Rechercher un client..."
+                                            className="w-full pl-10"
+                                            value={searchTerm}
+                                            onChange={(e) => setSearchTerm(e.target.value)}
+                                        />
+                                        <Search size={18} className="absolute left-3 top-3 text-gray-400" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="w-full lg:w-1/2 bg-emerald-50/50 border border-emerald-100 rounded-xl p-4 text-sm text-emerald-800 flex items-start gap-3">
+                                <Percent size={20} className="text-emerald-500 flex-shrink-0 mt-0.5" />
+                                <p className="font-medium">
+                                    Saisissez le montant de la remise (DH par Tonne) accordée à chaque client pour chaque produit. Laissez vide si aucune remise.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Îlot 2 : La Matrice (Tableau) */}
+                        <form onSubmit={submit} className="bg-white rounded-[1.5rem] shadow-sm overflow-hidden border border-gray-100 relative">
+                            {processing && (
+                                <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-30 flex items-center justify-center rounded-[1.5rem]">
+                                    <div className="bg-[#29303d] text-white px-6 py-3 rounded-full font-bold flex items-center gap-3 shadow-xl">
+                                        <Loader2 size={18} className="animate-spin" />
+                                        Enregistrement en cours...
+                                    </div>
+                                </div>
+                            )}
+
                             <div className="overflow-x-auto">
-                                <table className="min-w-full divide-y divide-gray-200">
-                                    <thead className="bg-gray-50">
+                                <table className="min-w-full text-left">
+                                    <thead className="bg-gray-50/50">
                                         <tr>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky left-0 bg-gray-50">Client</th>
+                                            <th className="px-6 py-5 border-b border-gray-100 text-xs font-bold text-[#29303d] uppercase tracking-wider sticky left-0 bg-gray-50/90 backdrop-blur-md z-20 shadow-[1px_0_0_0_#f3f4f6]">
+                                                Client \ Produit (DH/T)
+                                            </th>
                                             {produits.map((p: any) => (
-                                                <th key={p.id} className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                    {p.nom} (DH/Tonne)
+                                                <th key={p.id} className="px-4 py-5 border-b border-gray-100 text-center min-w-[140px]">
+                                                    <div className="text-[13px] font-bold text-[#29303d]">{p.nom}</div>
                                                 </th>
                                             ))}
                                         </tr>
                                     </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200">
+                                    <tbody className="divide-y divide-gray-100">
                                         {filteredClients.map((client: any) => {
                                             const rowData = matrix.find((r: any) => r.client_id === client.id);
                                             return (
-                                                <tr key={client.id} className="hover:bg-gray-50">
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 sticky left-0 bg-white">
+                                                <tr key={client.id} className="hover:bg-gray-50/50 transition-colors group">
+                                                    <td className="px-6 py-4 font-bold text-[15px] text-[#29303d] sticky left-0 bg-white group-hover:bg-gray-50/50 shadow-[1px_0_0_0_#f3f4f6] z-10 transition-colors">
                                                         {client.nom_affichage}
                                                     </td>
                                                     {produits.map((p: any) => (
-                                                        <td key={p.id} className="px-4 py-2 text-center bg-white">
+                                                        <td key={p.id} className="px-3 py-3">
                                                             <TextInput
                                                                 type="number"
                                                                 min="0"
                                                                 step="0.01"
-                                                                className="w-24 text-center"
+                                                                placeholder="-"
+                                                                className="w-full text-center font-bold text-emerald-700 h-11 bg-gray-50 border-transparent hover:border-emerald-200 focus:bg-white focus:ring-emerald-500 transition-all placeholder:text-gray-300 placeholder:font-medium"
                                                                 value={rowData ? rowData.taux[p.id] : ''}
                                                                 onChange={(e) => handleTauxChange(client.id, p.id, e.target.value)}
-                                                                placeholder="-"
                                                             />
                                                         </td>
                                                     ))}
@@ -148,8 +177,11 @@ export default function RemisesBaremes({ annee, clients, produits, baremes }: an
                                         })}
                                         {filteredClients.length === 0 && (
                                             <tr>
-                                                <td colSpan={produits.length + 1} className="px-6 py-12 text-center text-gray-500">
-                                                    Aucun client trouvé.
+                                                <td colSpan={produits.length + 1} className="px-6 py-16 text-center">
+                                                    <div className="flex flex-col items-center justify-center text-gray-400">
+                                                        <AlertCircle size={48} className="mb-4 opacity-30" />
+                                                        <p className="text-lg font-medium text-gray-600">Aucun client trouvé.</p>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         )}
@@ -157,13 +189,16 @@ export default function RemisesBaremes({ annee, clients, produits, baremes }: an
                                 </table>
                             </div>
                             
-                            <div className="p-4 bg-gray-50 border-t flex justify-end">
-                                <PrimaryButton disabled={processing}>
-                                    Enregistrer les barèmes
+                            {/* Actions (Footer du form) */}
+                            <div className="p-6 bg-gray-50/80 border-t border-gray-100 flex justify-end">
+                                <PrimaryButton disabled={processing} className="!bg-[#29303d] hover:!bg-black gap-2 !h-12 !px-8">
+                                    <Save size={18} />
+                                    <span>Enregistrer les barèmes</span>
                                 </PrimaryButton>
                             </div>
                         </form>
-                    </div>
+
+                    </div> {/* Fin Super Card */}
 
                 </div>
             </div>

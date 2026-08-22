@@ -7,7 +7,7 @@ interface FilterCardProps {
 
 export default function FilterCard({ children, className = '' }: FilterCardProps) {
     return (
-        <div className={`p-4 rounded-xl shadow-sm border border-gray-200 bg-white mb-6 ${className}`}>
+        <div className={`p-4 rounded-lg shadow-sm border border-gray-200 bg-white mb-4 ${className}`}>
             {children}
         </div>
     );

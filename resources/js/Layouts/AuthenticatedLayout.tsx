@@ -30,126 +30,135 @@ export default function Authenticated({
     }, [flash]);
 
     return (
-        <div className="min-h-screen bg-gray-50 font-sans">
+        <div className="min-h-screen bg-[#f8f9fa] font-sans">
             {toastMessage && (
                 <div className="fixed top-4 right-4 z-50 animate-fade-in-down">
-                    <div className={`rounded-md px-4 py-3 shadow-lg flex items-center gap-3 ${toastMessage.type === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white'}`}>
+                    <div className={`rounded-xl px-4 py-3 shadow-xl border flex items-center gap-3 ${toastMessage.type === 'success' ? 'bg-white border-green-100' : 'bg-white border-red-100'}`}>
                         {toastMessage.type === 'success' ? (
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                            <div className="bg-green-50 text-green-600 p-1.5 rounded-full">
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+                            </div>
                         ) : (
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                            <div className="bg-red-50 text-red-600 p-1.5 rounded-full">
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
+                            </div>
                         )}
-                        <span className="font-medium text-sm">{toastMessage.text}</span>
+                        <span className="font-bold text-[15px] text-[#29303d]">{toastMessage.text}</span>
                     </div>
                 </div>
             )}
-            <nav className="bg-white shadow-sm sticky top-0 z-40">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex h-16 justify-between items-center relative">
-                        <div className="flex items-center h-full">
-                            <div className="flex shrink-0 items-center">
-                                <Link href="/">
-                                    <ApplicationLogo className="block h-10 w-auto" />
-                                </Link>
+            
+            {/* Navbar Premium */}
+            <nav className="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-40 transition-all duration-300 print:hidden">
+                <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
+                    <div className="flex h-16 justify-between items-center gap-8">
+                        {/* Logo Area */}
+                        <div className="flex shrink-0 items-center">
+                            <Link href="/">
+                                <ApplicationLogo className="block h-10 w-auto" />
+                            </Link>
+                        </div>
+
+                        {/* Center Navigation */}
+                        <div className="hidden lg:flex flex-1 justify-center items-center gap-1.5">
+                            <NavLink
+                                href={route('dashboard')}
+                                active={route().current('dashboard')}
+                            >
+                                Dashboard
+                            </NavLink>
+                            <NavLink
+                                href={route('bon-livraisons.index')}
+                                active={route().current('bon-livraisons.*')}
+                            >
+                                Ventes
+                            </NavLink>
+                            <NavLink
+                                href={route('encaissements.index')}
+                                active={route().current('encaissements.*')}
+                            >
+                                Encaissements
+                            </NavLink>
+                            <NavLink
+                                href={route('clients.index')}
+                                active={route().current('clients.*')}
+                            >
+                                Clients
+                            </NavLink>
+                            <NavLink
+                                href={route('rapports.index')}
+                                active={route().current('rapports.*')}
+                            >
+                                Rapports
+                            </NavLink>
+
+                            {/* Dropdown Configuration */}
+                            <div className="relative inline-flex items-center">
+                                <Dropdown>
+                                    <Dropdown.Trigger>
+                                        <button
+                                            type="button"
+                                            className={`inline-flex items-center px-4 py-2 text-[14px] rounded-xl transition-all duration-200 focus:outline-none border ${
+                                                route().current('produits.*') || route().current('prix-clients.*')
+                                                    ? 'bg-[#29303d] text-white font-bold shadow-md border-transparent'
+                                                    : 'text-gray-500 font-medium border-transparent hover:border-gray-200 hover:bg-gray-50/80 hover:text-gray-900'
+                                            }`}
+                                        >
+                                            Configuration
+                                            <svg className={`ml-1.5 h-4 w-4 transition-transform ${route().current('produits.*') || route().current('prix-clients.*') ? 'text-white/70' : 'text-gray-400'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </Dropdown.Trigger>
+                                    <Dropdown.Content width="48" contentClasses="bg-white">
+                                        <Dropdown.Link href={route('produits.index')}>Produits</Dropdown.Link>
+                                        <Dropdown.Link href={route('prix-clients.index')}>Prix par Client</Dropdown.Link>
+                                    </Dropdown.Content>
+                                </Dropdown>
+                            </div>
+
+                            {/* Dropdown Remises */}
+                            <div className="relative inline-flex items-center">
+                                <Dropdown>
+                                    <Dropdown.Trigger>
+                                        <button
+                                            type="button"
+                                            className={`inline-flex items-center px-4 py-2 text-[14px] rounded-xl transition-all duration-200 focus:outline-none border ${
+                                                route().current('remises.*')
+                                                    ? 'bg-[#29303d] text-white font-bold shadow-md border-transparent'
+                                                    : 'text-gray-500 font-medium border-transparent hover:border-gray-200 hover:bg-gray-50/80 hover:text-gray-900'
+                                            }`}
+                                        >
+                                            Remises
+                                            <svg className={`ml-1.5 h-4 w-4 transition-transform ${route().current('remises.*') ? 'text-white/70' : 'text-gray-400'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </Dropdown.Trigger>
+                                    <Dropdown.Content width="48" contentClasses="bg-white">
+                                        <Dropdown.Link href={route('remises.baremes')}>Barèmes Remises</Dropdown.Link>
+                                        <Dropdown.Link href={route('remises.calculs')}>Calculer Remises</Dropdown.Link>
+                                    </Dropdown.Content>
+                                </Dropdown>
                             </div>
                         </div>
 
-                        <div className="hidden space-x-2 sm:flex h-full items-center absolute left-1/2 transform -translate-x-1/2">
-                            <NavLink
-                                href={route('dashboard')}
-                                    active={route().current('dashboard')}
-                                >
-                                    Dashboard
-                                </NavLink>
-                                <NavLink
-                                    href={route('bon-livraisons.index')}
-                                    active={route().current('bon-livraisons.*')}
-                                >
-                                    Ventes
-                                </NavLink>
-                                <NavLink
-                                    href={route('encaissements.index')}
-                                    active={route().current('encaissements.*')}
-                                >
-                                    Encaissements
-                                </NavLink>
-                                <NavLink
-                                    href={route('clients.index')}
-                                    active={route().current('clients.*')}
-                                >
-                                    Clients
-                                </NavLink>
-                                <NavLink
-                                    href={route('rapports.index')}
-                                    active={route().current('rapports.*')}
-                                >
-                                    Rapports
-                                </NavLink>
-
-                                {/* Dropdown Configuration */}
-                                <div className="relative inline-flex items-center h-full">
-                                    <Dropdown>
-                                        <Dropdown.Trigger>
-                                            <button
-                                                type="button"
-                                                className={`inline-flex items-center px-3 py-2 text-sm rounded-lg transition-colors duration-150 focus:outline-none ${
-                                                    route().current('produits.*') || route().current('prix-clients.*')
-                                                        ? 'bg-primary-100/50 text-primary-600 font-semibold'
-                                                        : 'text-gray-600 font-medium hover:bg-gray-100 hover:text-gray-900'
-                                                }`}
-                                            >
-                                                Configuration
-                                                <svg className="ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                                                </svg>
-                                            </button>
-                                        </Dropdown.Trigger>
-                                        <Dropdown.Content>
-                                            <Dropdown.Link href={route('produits.index')}>Produits</Dropdown.Link>
-                                            <Dropdown.Link href={route('prix-clients.index')}>Prix par Client</Dropdown.Link>
-                                        </Dropdown.Content>
-                                    </Dropdown>
-                                </div>
-
-                                {/* Dropdown Remises */}
-                                <div className="relative inline-flex items-center h-full">
-                                    <Dropdown>
-                                        <Dropdown.Trigger>
-                                            <button
-                                                type="button"
-                                                className={`inline-flex items-center px-3 py-2 text-sm rounded-lg transition-colors duration-150 focus:outline-none ${
-                                                    route().current('remises.*')
-                                                        ? 'bg-primary-100/50 text-primary-600 font-semibold'
-                                                        : 'text-gray-600 font-medium hover:bg-gray-100 hover:text-gray-900'
-                                                }`}
-                                            >
-                                                Remises
-                                                <svg className="ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                                                </svg>
-                                            </button>
-                                        </Dropdown.Trigger>
-                                        <Dropdown.Content>
-                                            <Dropdown.Link href={route('remises.baremes')}>Barèmes Remises</Dropdown.Link>
-                                            <Dropdown.Link href={route('remises.calculs')}>Calculer Remises</Dropdown.Link>
-                                        </Dropdown.Content>
-                                    </Dropdown>
-                                </div>
-                            </div>
-
-                        <div className="hidden sm:flex sm:items-center">
+                        {/* Right Area (Admin/Profile) */}
+                        <div className="hidden sm:flex sm:items-center shrink-0">
                             <div className="relative">
                                 <Dropdown>
                                     <Dropdown.Trigger>
-                                        <span className="inline-flex rounded-md">
+                                        <span className="inline-flex">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-semibold tracking-wide text-gray-600 transition duration-150 ease-in-out hover:bg-gray-50 hover:text-gray-900 focus:outline-none"
+                                                className="inline-flex items-center px-3 py-1.5 text-[14px] font-bold text-[#29303d] transition-all duration-200 border border-transparent hover:border-gray-200 hover:bg-gray-50/80 rounded-xl focus:outline-none"
                                             >
+                                                <div className="w-8 h-8 rounded-full bg-[#ecebe8] border border-gray-200 flex items-center justify-center mr-3 text-xs font-black text-gray-500 uppercase tracking-widest">
+                                                    {user.name.substring(0, 2)}
+                                                </div>
                                                 {user.name}
-
                                                 <svg
-                                                    className="-me-0.5 ms-2 h-4 w-4"
+                                                    className="ml-2 h-4 w-4 text-gray-400"
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 20 20"
                                                     fill="currentColor"
@@ -164,18 +173,20 @@ export default function Authenticated({
                                         </span>
                                     </Dropdown.Trigger>
 
-                                    <Dropdown.Content>
+                                    <Dropdown.Content align="right" width="48" contentClasses="bg-white">
                                         <Dropdown.Link
                                             href={route('profile.edit')}
                                         >
-                                            Profile
+                                            Mon Profil
                                         </Dropdown.Link>
+                                        <div className="border-t border-gray-100 my-1"></div>
                                         <Dropdown.Link
                                             href={route('logout')}
                                             method="post"
                                             as="button"
+                                            className="!text-red-600 hover:!bg-red-50"
                                         >
-                                            Log Out
+                                            Déconnexion
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>

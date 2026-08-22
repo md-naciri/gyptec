@@ -1,5 +1,4 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import PageHeader from '@/Components/PageHeader';
 import { Head, Link, useForm } from '@inertiajs/react';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
@@ -8,8 +7,9 @@ import TextInput from '@/Components/TextInput';
 import DatePicker from '@/Components/DatePicker';
 import ClientSelect from '@/Components/ClientSelect';
 import SelectInput from '@/Components/SelectInput';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { getTodayDateCasablanca } from '@/utils/date';
+import { Truck, MapPin, Map, FileText, Plus, X, Box, Save, ChevronLeft, AlertCircle } from 'lucide-react';
 
 export default function Create({ clients, produits, prixClients }: { clients: any[], produits: any[], prixClients: any[] }) {
     const today = getTodayDateCasablanca();
@@ -97,172 +97,241 @@ export default function Create({ clients, produits, prixClients }: { clients: an
     return (
         <AuthenticatedLayout>
             <Head title="Nouveau BL" />
-            <PageHeader 
-                title="Saisie d'un Bon de Livraison" 
-                subtitle="Créer un nouveau BL pour enregistrer une vente"
-            />
 
-            <div className="py-4">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div className="py-8 lg:py-12">
+                <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
+                    
+                    {/* Bouton Retour */}
+                    <div className="mb-6">
+                        <Link href={route('bon-livraisons.index')} className="inline-flex items-center text-sm font-bold text-gray-500 hover:text-[#29303d] transition-colors">
+                            <ChevronLeft size={16} className="mr-1" />
+                            Retour à la liste des Ventes
+                        </Link>
+                    </div>
+
                     <form onSubmit={submit}>
-                        
-                        {/* HEADER SECTION */}
-                        <div className="bg-white p-6 rounded-lg shadow-sm mb-6 border border-gray-100">
-                            <h3 className="text-lg font-medium text-gray-900 mb-4 border-b pb-2">Informations Générales</h3>
+                        {/* La "Super Card" */}
+                        <div className="bg-[#ecebe8] rounded-[2rem] lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-12 shadow-sm border border-gray-200/50">
                             
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {/* En-tête interne */}
+                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
                                 <div>
-                                    <InputLabel htmlFor="date" value="Date *" />
-                                    <DatePicker
-                                        id="date"
-                                        selected={data.date ? new Date(data.date) : null}
-                                        onChange={(d) => {
-                                            if (d) {
-                                                d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
-                                                setData('date', d.toISOString().split('T')[0]);
-                                            } else {
-                                                setData('date', '');
-                                            }
-                                        }}
-                                        required
-                                    />
-                                    <InputError message={errors.date} className="mt-2" />
+                                    <h1 className="text-4xl lg:text-5xl font-black text-[#29303d] tracking-tight mb-2">Saisie d'un Bon de Livraison</h1>
+                                    <p className="text-gray-600 text-lg">Enregistrer une nouvelle expédition client</p>
                                 </div>
-                                <div>
-                                    <InputLabel htmlFor="numero_bl" value="Numéro BL" />
-                                    <TextInput id="numero_bl" className="mt-1 block w-full" value={data.numero_bl} onChange={e => setData('numero_bl', e.target.value)} placeholder="Ex: BL-2026-001" />
-                                    <InputError message={errors.numero_bl} className="mt-2" />
-                                </div>
-                                <div>
-                                    <InputLabel htmlFor="matricule_camion" value="Camion (Matricule)" />
-                                    <TextInput id="matricule_camion" className="mt-1 block w-full" value={data.matricule_camion} onChange={e => setData('matricule_camion', e.target.value)} />
-                                    <InputError message={errors.matricule_camion} className="mt-2" />
-                                </div>
-                                <div>
-                                    <InputLabel htmlFor="destination" value="Destination" />
-                                    <TextInput id="destination" className="mt-1 block w-full" value={data.destination} onChange={e => setData('destination', e.target.value)} />
-                                    <InputError message={errors.destination} className="mt-2" />
-                                </div>
-                                <div>
-                                    <InputLabel htmlFor="zone" value="Zone" />
-                                    <TextInput id="zone" className="mt-1 block w-full" value={data.zone} onChange={e => setData('zone', e.target.value)} />
-                                    <InputError message={errors.zone} className="mt-2" />
+                                <div className="bg-indigo-50 px-6 py-3 rounded-full border border-indigo-100 flex items-center gap-3">
+                                    <span className="text-sm font-bold text-indigo-800 uppercase tracking-wider">Total Estimé</span>
+                                    <span className="text-2xl font-black text-indigo-600">{totalBl.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} <span className="text-sm">DH</span></span>
                                 </div>
                             </div>
-                        </div>
 
-                        {/* LIGNES SECTION */}
-                        <div className="bg-white p-6 rounded-lg shadow-sm mb-6 border border-gray-100">
-                            <div className="flex justify-between items-center border-b pb-2 mb-4">
-                                <h3 className="text-lg font-medium text-gray-900">Lignes de Vente</h3>
-                                <button type="button" onClick={addLigne} className="bg-indigo-50 text-indigo-700 hover:bg-indigo-100 px-3 py-1 rounded text-sm font-medium transition">
-                                    + Ajouter une ligne
-                                </button>
-                            </div>
-
-                            {typeof errors.lignes === 'string' && (
-                                <InputError message={errors.lignes} className="mb-4" />
-                            )}
-
-                            <div className="space-y-4">
-                                {data.lignes.map((ligne, index) => (
-                                    <div key={ligne.id} className="flex flex-col md:flex-row gap-4 items-start p-4 bg-gray-50 rounded-lg border border-gray-200 relative">
+                            <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                                
+                                {/* COLONNE GAUCHE : Infos Générales */}
+                                <div className="xl:col-span-1 space-y-8">
+                                    {/* Îlot 1 : Infos Générales */}
+                                    <div className="bg-white rounded-[1.5rem] p-6 lg:p-8 shadow-sm border border-gray-100">
+                                        <div className="flex items-center gap-3 mb-6">
+                                            <div className="w-10 h-10 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center">
+                                                <FileText size={20} />
+                                            </div>
+                                            <h3 className="text-xl font-bold text-[#29303d]">Détails du document</h3>
+                                        </div>
                                         
-                                        <div className="flex-1 min-w-[200px]">
-                                            <InputLabel value="Client *" />
-                                            <ClientSelect
-                                                clients={clients}
-                                                value={ligne.client_id}
-                                                onChange={(val: any) => handleLigneChange(index, 'client_id', val || '')}
-                                                required
-                                            />
-                                            <InputError message={(errors as any)[`lignes.${index}.client_id`]} className="mt-1 text-xs" />
+                                        <div className="space-y-5">
+                                            <div>
+                                                <InputLabel htmlFor="date" value="Date *" className="font-bold text-gray-500 uppercase tracking-wider text-xs mb-2" />
+                                                <DatePicker
+                                                    id="date"
+                                                    selected={data.date ? new Date(data.date) : null}
+                                                    onChange={(d) => {
+                                                        if (d) {
+                                                            d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+                                                            setData('date', d.toISOString().split('T')[0]);
+                                                        } else {
+                                                            setData('date', '');
+                                                        }
+                                                    }}
+                                                    required
+                                                />
+                                                <InputError message={errors.date} className="mt-2" />
+                                            </div>
+                                            <div>
+                                                <InputLabel htmlFor="numero_bl" value="Numéro BL" className="font-bold text-gray-500 uppercase tracking-wider text-xs mb-2" />
+                                                <TextInput id="numero_bl" className="w-full h-12" value={data.numero_bl} onChange={e => setData('numero_bl', e.target.value)} placeholder="Ex: BL-2026-001" />
+                                                <InputError message={errors.numero_bl} className="mt-2" />
+                                            </div>
                                         </div>
+                                    </div>
 
-                                        <div className="flex-1 min-w-[150px]">
-                                            <InputLabel value="Produit *" />
-                                            <SelectInput 
-                                                className="w-full"
-                                                value={ligne.produit_id}
-                                                onChange={(e: any) => handleLigneChange(index, 'produit_id', e.target.value)}
-                                                required
-                                            >
-                                                <option value="">-- Produit --</option>
-                                                {produits.map(p => <option key={p.id} value={p.id}>{p.nom}</option>)}
-                                            </SelectInput>
-                                            <InputError message={(errors as any)[`lignes.${index}.produit_id`]} className="mt-1 text-xs" />
+                                    {/* Îlot 2 : Logistique */}
+                                    <div className="bg-white rounded-[1.5rem] p-6 lg:p-8 shadow-sm border border-gray-100">
+                                        <div className="flex items-center gap-3 mb-6">
+                                            <div className="w-10 h-10 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center">
+                                                <Truck size={20} />
+                                            </div>
+                                            <h3 className="text-xl font-bold text-[#29303d]">Logistique & Transport</h3>
                                         </div>
-
-                                        <div className="w-24">
-                                            <InputLabel value="Qté *" />
-                                            <input 
-                                                type="number" step="0.01" min="0.01" required
-                                                className="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm sm:text-sm"
-                                                value={ligne.quantite}
-                                                onChange={e => handleLigneChange(index, 'quantite', e.target.value)}
-                                            />
-                                            <InputError message={(errors as any)[`lignes.${index}.quantite`]} className="mt-1 text-xs" />
+                                        
+                                        <div className="space-y-5">
+                                            <div>
+                                                <InputLabel htmlFor="matricule_camion" value="Camion (Matricule)" className="font-bold text-gray-500 uppercase tracking-wider text-xs mb-2" />
+                                                <div className="relative">
+                                                    <TextInput id="matricule_camion" className="w-full h-12 pl-11" value={data.matricule_camion} onChange={e => setData('matricule_camion', e.target.value)} placeholder="Ex: 1234-A-1" />
+                                                    <Truck size={18} className="absolute left-4 top-3.5 text-gray-400" />
+                                                </div>
+                                                <InputError message={errors.matricule_camion} className="mt-2" />
+                                            </div>
+                                            <div>
+                                                <InputLabel htmlFor="destination" value="Destination" className="font-bold text-gray-500 uppercase tracking-wider text-xs mb-2" />
+                                                <div className="relative">
+                                                    <TextInput id="destination" className="w-full h-12 pl-11" value={data.destination} onChange={e => setData('destination', e.target.value)} placeholder="Ville ou adresse" />
+                                                    <MapPin size={18} className="absolute left-4 top-3.5 text-gray-400" />
+                                                </div>
+                                            </div>
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div className="w-32">
-                                            <InputLabel value="Type" />
-                                            <SelectInput 
-                                                className="w-full"
-                                                value={ligne.type}
-                                                onChange={(e: any) => handleLigneChange(index, 'type', e.target.value)}
-                                            >
-                                                <option value="vente">Vente</option>
-                                                <option value="echantillon">Échantillon</option>
-                                            </SelectInput>
-                                        </div>
-
-                                        <div className="w-28">
-                                            <InputLabel value="Prix U. (DH) *" />
-                                            <input 
-                                                type="number" step="0.01" min="0" required
-                                                className={`mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm sm:text-sm ${ligne.type === 'echantillon' ? 'bg-gray-200' : ''}`}
-                                                value={ligne.prix_unitaire}
-                                                onChange={e => handleLigneChange(index, 'prix_unitaire', e.target.value)}
-                                                disabled={ligne.type === 'echantillon'}
-                                            />
-                                            <InputError message={(errors as any)[`lignes.${index}.prix_unitaire`]} className="mt-1 text-xs" />
-                                        </div>
-
-                                        <div className="w-32 font-medium text-right pt-7 pr-2 text-indigo-700">
-                                            {ligne.quantite && ligne.prix_unitaire && ligne.type === 'vente' 
-                                                ? (parseFloat(ligne.quantite) * parseFloat(ligne.prix_unitaire)).toFixed(2) + ' DH'
-                                                : (ligne.type === 'echantillon' ? '0.00 DH' : '-')}
-                                        </div>
-
-                                        {data.lignes.length > 1 && (
+                                {/* COLONNE DROITE : Lignes de BL */}
+                                <div className="xl:col-span-2">
+                                    <div className="bg-white rounded-[1.5rem] p-6 lg:p-8 shadow-sm border border-gray-100">
+                                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-10 h-10 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                                                    <Box size={20} />
+                                                </div>
+                                                <h3 className="text-xl font-bold text-[#29303d]">Lignes de Vente</h3>
+                                            </div>
                                             <button 
                                                 type="button" 
-                                                onClick={() => removeLigne(index)}
-                                                className="absolute -right-2 -top-2 bg-red-100 text-red-600 rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-200"
+                                                onClick={addLigne} 
+                                                className="flex items-center gap-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 hover:text-indigo-800 px-4 py-2 rounded-xl text-sm font-bold transition-colors"
                                             >
-                                                &times;
+                                                <Plus size={16} />
+                                                <span>Ajouter une ligne</span>
                                             </button>
+                                        </div>
+
+                                        {typeof errors.lignes === 'string' && (
+                                            <div className="bg-red-50 text-red-600 p-4 rounded-xl mb-6 font-medium text-sm flex items-center gap-2">
+                                                <AlertCircle size={18} />
+                                                {errors.lignes}
+                                            </div>
                                         )}
+
+                                        <div className="space-y-4">
+                                            {data.lignes.map((ligne, index) => (
+                                                <div key={ligne.id} className="relative p-6 bg-gray-50/50 border border-gray-100 rounded-2xl group hover:border-gray-200 transition-colors">
+                                                    
+                                                    {data.lignes.length > 1 && (
+                                                        <button 
+                                                            type="button" 
+                                                            onClick={() => removeLigne(index)}
+                                                            className="absolute -right-3 -top-3 bg-white border border-gray-200 text-red-500 rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-50 hover:text-red-600 hover:border-red-100 shadow-sm transition-colors z-10"
+                                                            title="Supprimer la ligne"
+                                                        >
+                                                            <X size={16} strokeWidth={3} />
+                                                        </button>
+                                                    )}
+
+                                                    <div className="flex flex-col gap-4">
+                                                        
+                                                        {/* Ligne 1 : Client & Produit */}
+                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                            <div>
+                                                                <InputLabel value="Client *" className="font-bold text-gray-500 uppercase tracking-wider text-[10px] mb-1.5" />
+                                                                <ClientSelect
+                                                                    clients={clients}
+                                                                    value={ligne.client_id}
+                                                                    onChange={(val: any) => handleLigneChange(index, 'client_id', val || '')}
+                                                                    required
+                                                                />
+                                                                <InputError message={(errors as any)[`lignes.${index}.client_id`]} className="mt-1 text-[10px]" />
+                                                            </div>
+                                                            <div>
+                                                                <InputLabel value="Produit *" className="font-bold text-gray-500 uppercase tracking-wider text-[10px] mb-1.5" />
+                                                                <SelectInput 
+                                                                    className="w-full h-11 !rounded-xl"
+                                                                    value={ligne.produit_id}
+                                                                    onChange={(e: any) => handleLigneChange(index, 'produit_id', e.target.value)}
+                                                                    required
+                                                                >
+                                                                    <option value="">-- Choisir un produit --</option>
+                                                                    {produits.map(p => <option key={p.id} value={p.id}>{p.nom}</option>)}
+                                                                </SelectInput>
+                                                                <InputError message={(errors as any)[`lignes.${index}.produit_id`]} className="mt-1 text-[10px]" />
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Ligne 2 : Type, Quantité, Prix */}
+                                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                            <div>
+                                                                <InputLabel value="Type" className="font-bold text-gray-500 uppercase tracking-wider text-[10px] mb-1.5" />
+                                                                <SelectInput 
+                                                                    className="w-full h-11 !rounded-xl"
+                                                                    value={ligne.type}
+                                                                    onChange={(e: any) => handleLigneChange(index, 'type', e.target.value)}
+                                                                >
+                                                                    <option value="vente">Vente</option>
+                                                                    <option value="echantillon">Échantillon</option>
+                                                                </SelectInput>
+                                                            </div>
+                                                            <div>
+                                                                <InputLabel value="Qté (T) *" className="font-bold text-gray-500 uppercase tracking-wider text-[10px] mb-1.5" />
+                                                                <input 
+                                                                    type="number" step="0.01" min="0.01" required
+                                                                    className="block w-full h-11 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm sm:text-sm font-bold text-[#29303d]"
+                                                                    value={ligne.quantite}
+                                                                    onChange={e => handleLigneChange(index, 'quantite', e.target.value)}
+                                                                />
+                                                                <InputError message={(errors as any)[`lignes.${index}.quantite`]} className="mt-1 text-[10px]" />
+                                                            </div>
+                                                            <div>
+                                                                <InputLabel value="Prix U. (DH) *" className="font-bold text-gray-500 uppercase tracking-wider text-[10px] mb-1.5" />
+                                                                <input 
+                                                                    type="number" step="0.01" min="0" required
+                                                                    className={`block w-full h-11 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm sm:text-sm font-bold ${ligne.type === 'echantillon' ? 'bg-gray-200 text-gray-500' : 'text-indigo-600'}`}
+                                                                    value={ligne.prix_unitaire}
+                                                                    onChange={e => handleLigneChange(index, 'prix_unitaire', e.target.value)}
+                                                                    disabled={ligne.type === 'echantillon'}
+                                                                />
+                                                                <InputError message={(errors as any)[`lignes.${index}.prix_unitaire`]} className="mt-1 text-[10px]" />
+                                                            </div>
+                                                            
+                                                            {/* Sous-total de la ligne */}
+                                                            <div className="col-span-1 md:col-span-3 mt-2 flex justify-end items-center">
+                                                                <div className="bg-white px-4 py-2 rounded-lg border border-gray-100 flex items-center gap-2">
+                                                                    <span className="text-xs font-bold text-gray-400 uppercase">Sous-total :</span>
+                                                                    <span className="font-black text-indigo-700">
+                                                                        {ligne.quantite && ligne.prix_unitaire && ligne.type === 'vente' 
+                                                                            ? (parseFloat(ligne.quantite) * parseFloat(ligne.prix_unitaire)).toLocaleString('fr-FR', { minimumFractionDigits: 2 }) + ' DH'
+                                                                            : (ligne.type === 'echantillon' ? '0.00 DH' : '-')}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
-                                ))}
-                            </div>
-                            
-                            <div className="mt-6 flex justify-end border-t pt-4">
-                                <div className="text-xl font-bold text-gray-900">
-                                    Total Estimé : <span className="text-indigo-600">{totalBl.toFixed(2)} DH</span>
                                 </div>
                             </div>
-                        </div>
+                            
+                            {/* Actions du formulaire */}
+                            <div className="mt-10 flex flex-col sm:flex-row justify-end items-center gap-4">
+                                <Link href={route('bon-livraisons.index')} className="w-full sm:w-auto px-6 py-3 bg-white border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 hover:text-gray-900 font-bold transition-colors text-center">
+                                    Annuler
+                                </Link>
+                                <PrimaryButton disabled={processing} className="w-full sm:w-auto !bg-[#29303d] hover:!bg-black !h-12 !px-8 !rounded-xl gap-2 text-base">
+                                    <Save size={18} />
+                                    <span>Enregistrer le Bon de Livraison</span>
+                                </PrimaryButton>
+                            </div>
 
-                        {/* SUBMIT */}
-                        <div className="flex justify-end gap-4 mb-10">
-                            <Link href={route('bon-livraisons.index')} className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 font-medium transition">
-                                Annuler
-                            </Link>
-                            <PrimaryButton disabled={processing} className="px-8 py-2 text-base">
-                                Enregistrer le BL
-                            </PrimaryButton>
-                        </div>
+                        </div> {/* Fin Super Card */}
                     </form>
                 </div>
             </div>

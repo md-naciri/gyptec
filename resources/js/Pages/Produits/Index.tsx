@@ -1,9 +1,9 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import PageHeader from '@/Components/PageHeader';
+import PrimaryButton from '@/Components/PrimaryButton';
 import ConfirmModal from '@/Components/ConfirmModal';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { useState } from 'react';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2, Plus, AlertCircle, Package } from 'lucide-react';
 
 export default function Index({ produits }: { produits: any[] }) {
     const { delete: destroy } = useForm();
@@ -24,52 +24,65 @@ export default function Index({ produits }: { produits: any[] }) {
     return (
         <AuthenticatedLayout>
             <Head title="Produits" />
-            <PageHeader 
-                title="Catalogue Produits" 
-                subtitle="Gestion des articles et de leurs prix par défaut"
-                action={
-                    <Link
-                        href={route('produits.create')}
-                        className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700 transition shadow-sm font-medium"
-                    >
-                        + Nouveau Produit
-                    </Link>
-                }
-            />
 
-            <div className="py-4">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
+            <div className="py-8 lg:py-12">
+                <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
+                    
+                    {/* La "Super Card" */}
+                    <div className="bg-[#ecebe8] rounded-[2rem] lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-12 shadow-sm border border-gray-200/50">
+                        
+                        {/* En-tête interne */}
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+                            <div>
+                                <h1 className="text-4xl lg:text-5xl font-black text-[#29303d] tracking-tight mb-2">Catalogue Produits</h1>
+                                <p className="text-gray-600 text-lg">Gestion des articles et de leurs prix par défaut</p>
+                            </div>
+                            <Link href={route('produits.create')}>
+                                <PrimaryButton className="!h-12 !rounded-full !px-8 text-base shadow-lg shadow-primary-500/20 gap-2">
+                                    <Plus size={20} />
+                                    <span>Nouveau Produit</span>
+                                </PrimaryButton>
+                            </Link>
+                        </div>
+
+                        {/* Îlot 1 : Le Tableau */}
+                        <div className="bg-white rounded-[1.5rem] shadow-sm overflow-hidden border border-gray-100">
                             <div className="overflow-x-auto">
-                                <table className="min-w-full divide-y divide-gray-200">
-                                    <thead className="bg-gray-50">
-                                        <tr>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Unité</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prix par Défaut (DH)</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
-                                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                <table className="min-w-full">
+                                    <thead>
+                                        <tr className="border-b border-gray-100 bg-white">
+                                            <th className="px-6 py-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Nom du Produit</th>
+                                            <th className="px-6 py-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Unité</th>
+                                            <th className="px-6 py-5 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Prix par Défaut (DH)</th>
+                                            <th className="px-6 py-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Statut</th>
+                                            <th className="px-6 py-5 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200">
+                                    <tbody className="divide-y divide-gray-100">
                                         {produits.map((produit) => (
-                                            <tr key={produit.id} className="hover:bg-gray-50 transition">
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{produit.nom}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{produit.unite}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{produit.prix_defaut}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${produit.actif ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                                            <tr key={produit.id} className="hover:bg-gray-50/50 transition-colors">
+                                                <td className="px-6 py-5 whitespace-nowrap">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="w-10 h-10 rounded-xl bg-gray-100 text-gray-400 flex items-center justify-center">
+                                                            <Package size={20} />
+                                                        </div>
+                                                        <span className="text-[15px] font-bold text-[#29303d]">{produit.nom}</span>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-5 whitespace-nowrap text-sm text-gray-600 font-medium">{produit.unite}</td>
+                                                <td className="px-6 py-5 whitespace-nowrap text-right text-base font-black text-[#29303d]">{Number(produit.prix_defaut).toLocaleString('fr-FR', { minimumFractionDigits: 2 })}</td>
+                                                <td className="px-6 py-5 whitespace-nowrap">
+                                                    <span className={`px-3 py-1 inline-flex text-xs font-bold rounded-full ${produit.actif ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}`}>
                                                         {produit.actif ? 'Actif' : 'Inactif'}
                                                     </span>
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                    <div className="flex items-center justify-end gap-2">
-                                                        <Link href={route('produits.edit', produit.id)} title="Modifier" className="text-gray-600 hover:text-blue-600 bg-gray-50 p-1.5 rounded-md hover:bg-blue-50 transition-colors">
-                                                            <Pencil size={18} />
+                                                <td className="px-6 py-5 whitespace-nowrap text-right">
+                                                    <div className="flex justify-end items-center gap-2">
+                                                        <Link href={route('produits.edit', produit.id)} title="Modifier" className="text-gray-400 bg-gray-50/80 hover:text-indigo-600 hover:bg-indigo-50 p-2.5 rounded-xl transition-all border border-gray-100">
+                                                            <Pencil size={16} />
                                                         </Link>
-                                                        <button onClick={() => handleDelete(produit.id)} title="Supprimer" className="text-gray-600 hover:text-red-600 bg-gray-50 p-1.5 rounded-md hover:bg-red-50 transition-colors">
-                                                            <Trash2 size={18} />
+                                                        <button onClick={() => handleDelete(produit.id)} title="Supprimer" className="text-gray-400 bg-gray-50/80 hover:text-red-600 hover:bg-red-50 p-2.5 rounded-xl transition-all border border-gray-100">
+                                                            <Trash2 size={16} />
                                                         </button>
                                                     </div>
                                                 </td>
@@ -77,14 +90,21 @@ export default function Index({ produits }: { produits: any[] }) {
                                         ))}
                                         {produits.length === 0 && (
                                             <tr>
-                                                <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">Aucun produit trouvé.</td>
+                                                <td colSpan={5} className="px-6 py-16 text-center">
+                                                    <div className="flex flex-col items-center justify-center text-gray-400">
+                                                        <AlertCircle size={48} className="mb-4 opacity-30" />
+                                                        <p className="text-lg font-medium text-gray-600">Aucun produit trouvé.</p>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         )}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                    </div>
+
+                    </div> {/* Fin Super Card */}
+
                     <ConfirmModal 
                         show={showConfirm}
                         onClose={() => setShowConfirm(false)}

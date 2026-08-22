@@ -25,6 +25,15 @@ class EncaissementController extends Controller
         if ($request->has('date_fin') && $request->date_fin) {
             $query->whereDate('date', '<=', $request->date_fin);
         }
+        if ($request->has('echeance_debut') && $request->echeance_debut) {
+            $query->whereDate('date_echeance', '>=', $request->echeance_debut);
+        }
+        if ($request->has('echeance_fin') && $request->echeance_fin) {
+            $query->whereDate('date_echeance', '<=', $request->echeance_fin);
+        }
+        if ($request->has('reference') && $request->reference) {
+            $query->where('reference', 'like', '%' . $request->reference . '%');
+        }
 
         $encaissements = $query->paginate(20);
 
@@ -36,7 +45,7 @@ class EncaissementController extends Controller
         return Inertia::render('Encaissements/Index', [
             'encaissements' => $encaissements,
             'clients' => Client::where('actif', true)->orderBy('nom')->get(),
-            'filters' => $request->only(['client_id', 'statut', 'date_debut', 'date_fin']),
+            'filters' => $request->only(['client_id', 'statut', 'date_debut', 'date_fin', 'echeance_debut', 'echeance_fin', 'reference']),
             'echeancesCetteSemaine' => $echeancesCetteSemaine,
         ]);
     }
@@ -79,7 +88,7 @@ class EncaissementController extends Controller
     public function updateStatut(Request $request, Encaissement $encaissement)
     {
         $validated = $request->validate([
-            'statut' => 'required|in:encaisse,en_attente,impaye,remplace,annule',
+            'statut' => 'required|in:encaisse,en_attente,impaye,rendu',
             'notes' => 'nullable|string',
         ]);
 
@@ -99,5 +108,30 @@ class EncaissementController extends Controller
     {
         $encaissement->delete();
         return redirect()->route('encaissements.index')->with('success', 'Encaissement supprimé.');
+    }
+
+    public function edit(Encaissement $encaissement)
+    {
+        return Inertia::render('Encaissements/Edit', [
+            'encaissement' => $encaissement,
+            'clients' => Client::where('actif', true)->orderBy('nom')->get(),
+        ]);
+    }
+
+    public function update(Request $request, Encaissement $encaissement)
+    {
+        $validated = $request->validate([
+            'client_id' => 'required|exists:clients,id',
+            'date' => 'required|date',
+            'date_echeance' => 'nullable|date',
+            'montant' => 'required|numeric|min:0.01',
+            'mode_paiement' => 'required|in:espece,cheque,virement,effet,versement',
+            'reference' => 'required_if:mode_paiement,cheque,effet|nullable|string|max:255',
+            'notes' => 'nullable|string',
+        ]);
+
+        $encaissement->update($validated);
+
+        return redirect()->route('encaissements.index')->with('success', 'Encaissement mis à jour avec succès.');
     }
 }

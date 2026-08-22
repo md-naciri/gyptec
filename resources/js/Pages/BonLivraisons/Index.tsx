@@ -1,17 +1,17 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import PageHeader from '@/Components/PageHeader';
-import FilterCard from '@/Components/FilterCard';
 import TextInput from '@/Components/TextInput';
 import PrimaryButton from '@/Components/PrimaryButton';
 import ConfirmModal from '@/Components/ConfirmModal';
+import DatePicker from '@/Components/DatePicker';
+import ClientSelect from '@/Components/ClientSelect';
 import { Head, Link, useForm, router } from '@inertiajs/react';
 import { useState } from 'react';
-import { Eye, Trash2 } from 'lucide-react';
+import { Eye, Trash2, Plus, AlertCircle, RefreshCw, Edit } from 'lucide-react';
 import { formatDateFr } from '@/utils/date';
-import DatePicker from '@/Components/DatePicker';
 
-export default function Index({ bons, filters }: { bons: any, filters: any }) {
+export default function Index({ bons, clients, filters }: { bons: any, clients: any[], filters: any }) {
     const { delete: destroy } = useForm();
+    const [clientId, setClientId] = useState(filters.client_id || '');
     const [camion, setCamion] = useState(filters.camion || '');
     const [numero, setNumero] = useState(filters.numero || '');
     const [dateDebut, setDateDebut] = useState(filters.date_debut || '');
@@ -35,6 +35,7 @@ export default function Index({ bons, filters }: { bons: any, filters: any }) {
         router.get(route('bon-livraisons.index'), { 
             camion, 
             numero,
+            client_id: clientId,
             date_debut: dateDebut,
             date_fin: dateFin 
         }, { preserveState: true });
@@ -43,121 +44,148 @@ export default function Index({ bons, filters }: { bons: any, filters: any }) {
     return (
         <AuthenticatedLayout>
             <Head title="Bons de Livraison" />
-            <PageHeader 
-                title="Bons de Livraison (Ventes)" 
-                subtitle="Historique des ventes et expéditions"
-                action={
-                    <Link
-                        href={route('bon-livraisons.create')}
-                        className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700 transition shadow-sm font-medium"
-                    >
-                        + Nouveau BL
-                    </Link>
-                }
-            />
 
-            <div className="py-4">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div className="py-8 lg:py-12">
+                <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
                     
-                    <FilterCard>
-                        <form onSubmit={handleSearch} className="flex flex-wrap gap-4 items-end">
-                            <div className="flex-1 min-w-[150px]">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">N° BL</label>
-                                <TextInput 
-                                    type="text" 
-                                    value={numero} 
-                                    onChange={e => setNumero(e.target.value)}
-                                    className="w-full"
-                                    placeholder="Rechercher..."
-                                />
+                    {/* La "Super Card" */}
+                    <div className="bg-[#ecebe8] rounded-[2rem] lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-12 shadow-sm border border-gray-200/50">
+                        
+                        {/* En-tête interne */}
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+                            <div>
+                                <h1 className="text-4xl lg:text-5xl font-black text-[#29303d] tracking-tight mb-2">Ventes & Expéditions</h1>
+                                <p className="text-gray-600 text-lg">Historique des bons de livraison</p>
                             </div>
-                            <div className="flex-1 min-w-[150px]">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Camion</label>
-                                <TextInput 
-                                    type="text" 
-                                    value={camion} 
-                                    onChange={e => setCamion(e.target.value)}
-                                    className="w-full"
-                                    placeholder="Rechercher..."
-                                />
-                            </div>
-                            <div className="flex-1 min-w-[150px]">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Du (Date)</label>
-                                <DatePicker
-                                    selected={dateDebut ? new Date(dateDebut) : null}
-                                    onChange={(d) => {
-                                        if (d) {
-                                            d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
-                                            setDateDebut(d.toISOString().split('T')[0]);
-                                        } else {
-                                            setDateDebut('');
-                                        }
-                                    }}
-                                    placeholderText="Début"
-                                    isClearable
-                                />
-                            </div>
-                            <div className="flex-1 min-w-[150px]">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Au (Date)</label>
-                                <DatePicker
-                                    selected={dateFin ? new Date(dateFin) : null}
-                                    onChange={(d) => {
-                                        if (d) {
-                                            d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
-                                            setDateFin(d.toISOString().split('T')[0]);
-                                        } else {
-                                            setDateFin('');
-                                        }
-                                    }}
-                                    placeholderText="Fin"
-                                    minDate={dateDebut ? new Date(dateDebut) : undefined}
-                                    isClearable
-                                />
-                            </div>
-                            <PrimaryButton type="submit">
-                                Filtrer
-                            </PrimaryButton>
-                            {(numero || camion || dateDebut || dateFin) && (
-                                <Link href={route('bon-livraisons.index')} className="text-gray-500 hover:text-gray-700 underline text-sm ml-2 pb-2 h-9 flex items-center">
-                                    Réinitialiser
-                                </Link>
-                            )}
-                        </form>
-                    </FilterCard>
+                            <Link href={route('bon-livraisons.create')}>
+                                <PrimaryButton className="!h-12 !rounded-full !px-8 text-base shadow-lg shadow-primary-500/20 gap-2">
+                                    <Plus size={20} />
+                                    <span>Nouveau BL</span>
+                                </PrimaryButton>
+                            </Link>
+                        </div>
 
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-0 text-gray-900">
+                        {/* Îlot 1 : La Toolbar (Filtres) */}
+                        <div className="bg-white rounded-[1.5rem] p-6 lg:p-8 shadow-sm mb-8">
+                            <form onSubmit={handleSearch} className="space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+                                    <div className="flex flex-col gap-2">
+                                        <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Client</label>
+                                        <ClientSelect
+                                            clients={clients}
+                                            value={clientId}
+                                            onChange={(val: any) => setClientId(val || '')}
+                                            placeholder="Tous les clients"
+                                        />
+                                    </div>
+                                    <div className="flex flex-col gap-2">
+                                        <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">N° BL</label>
+                                        <TextInput 
+                                            type="text" 
+                                            value={numero} 
+                                            onChange={e => setNumero(e.target.value)}
+                                            className="w-full"
+                                            placeholder="Ex: BL-2023-..."
+                                        />
+                                    </div>
+                                    <div className="flex flex-col gap-2">
+                                        <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Camion / Immat.</label>
+                                        <TextInput 
+                                            type="text" 
+                                            value={camion} 
+                                            onChange={e => setCamion(e.target.value)}
+                                            className="w-full"
+                                            placeholder="Ex: 1234-A-1"
+                                        />
+                                    </div>
+                                    <div className="flex flex-col gap-2">
+                                        <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Création Du</label>
+                                        <DatePicker
+                                            selected={dateDebut ? new Date(dateDebut) : null}
+                                            onChange={(d) => {
+                                                if (d) {
+                                                    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+                                                    setDateDebut(d.toISOString().split('T')[0]);
+                                                } else {
+                                                    setDateDebut('');
+                                                }
+                                            }}
+                                            placeholderText="Début"
+                                            isClearable
+                                        />
+                                    </div>
+                                    <div className="flex flex-col gap-2">
+                                        <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Création Au</label>
+                                        <DatePicker
+                                            selected={dateFin ? new Date(dateFin) : null}
+                                            onChange={(d) => {
+                                                if (d) {
+                                                    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+                                                    setDateFin(d.toISOString().split('T')[0]);
+                                                } else {
+                                                    setDateFin('');
+                                                }
+                                            }}
+                                            placeholderText="Fin"
+                                            minDate={dateDebut ? new Date(dateDebut) : undefined}
+                                            isClearable
+                                        />
+                                    </div>
+                                </div>
+                                <div className="flex justify-end items-center gap-4 pt-4 border-t border-gray-100">
+                                    {(clientId || numero || camion || dateDebut || dateFin) && (
+                                        <button 
+                                            type="button" 
+                                            onClick={() => window.location.href = route('bon-livraisons.index')} 
+                                            className="text-gray-500 hover:text-[#29303d] text-sm font-semibold h-11 px-6 flex items-center gap-2 hover:bg-gray-100 rounded-xl transition-colors"
+                                        >
+                                            <RefreshCw size={16} />
+                                            <span>Réinitialiser</span>
+                                        </button>
+                                    )}
+                                    <PrimaryButton type="submit" className="!bg-[#29303d] hover:!bg-black">
+                                        Appliquer les filtres
+                                    </PrimaryButton>
+                                </div>
+                            </form>
+                        </div>
+
+                        {/* Îlot 2 : Le Tableau */}
+                        <div className="bg-white rounded-[1.5rem] shadow-sm border border-gray-100">
                             <div className="overflow-x-auto">
-                                <table className="min-w-full divide-y divide-gray-200">
-                                    <thead className="bg-gray-50">
-                                        <tr>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">N° BL</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Camion</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nb Lignes</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Agent</th>
-                                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                <table className="min-w-full">
+                                    <thead>
+                                        <tr className="border-b border-gray-100 bg-white">
+                                            <th className="px-6 py-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Date</th>
+                                            <th className="px-6 py-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">N° BL</th>
+                                            <th className="px-6 py-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Camion</th>
+                                            <th className="px-6 py-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Nb Lignes</th>
+                                            <th className="px-6 py-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Agent</th>
+                                            <th className="px-6 py-5 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200">
+                                    <tbody className="divide-y divide-gray-100">
                                         {bons.data.map((bon: any) => (
-                                            <tr key={bon.id} className="hover:bg-gray-50 transition">
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{formatDateFr(bon.date)}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bon.numero_bl || '-'}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{bon.matricule_camion || '-'}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-bold">
-                                                        {bon.lignes.length}
+                                            <tr key={bon.id} className="hover:bg-gray-50/50 transition-colors">
+                                                <td className="px-6 py-5 whitespace-nowrap text-sm font-bold text-gray-900">{formatDateFr(bon.date)}</td>
+                                                <td className="px-6 py-5 whitespace-nowrap text-sm font-mono text-gray-600 font-bold">{bon.numero_bl || '-'}</td>
+                                                <td className="px-6 py-5 whitespace-nowrap text-sm text-gray-600 font-medium">{bon.matricule_camion || '-'}</td>
+                                                <td className="px-6 py-5 whitespace-nowrap text-sm">
+                                                    <span className="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-xs font-black">
+                                                        {bon.lignes.length} {bon.lignes.length > 1 ? 'articles' : 'article'}
                                                     </span>
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{bon.user?.name}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                    <div className="flex items-center justify-end gap-2">
-                                                        <Link href={route('bon-livraisons.show', bon.id)} title="Détails" className="text-gray-600 hover:text-primary-600 bg-gray-50 p-1.5 rounded-md hover:bg-primary-50 transition-colors">
-                                                            <Eye size={18} />
+                                                <td className="px-6 py-5 whitespace-nowrap text-sm text-gray-500 font-medium">{bon.user?.name}</td>
+                                                <td className="px-6 py-5 whitespace-nowrap text-right">
+                                                    <div className="flex justify-end items-center gap-2">
+                                                        <Link href={route('bon-livraisons.show', bon.id)} title="Détails" className="text-gray-400 bg-gray-50/80 hover:text-primary-600 hover:bg-primary-50 p-2.5 rounded-xl transition-all border border-gray-100">
+                                                            <Eye size={16} />
                                                         </Link>
-                                                        <button onClick={() => handleDelete(bon.id)} title="Supprimer" className="text-gray-600 hover:text-red-600 bg-gray-50 p-1.5 rounded-md hover:bg-red-50 transition-colors">
-                                                            <Trash2 size={18} />
+                                                        <Link href={route('bon-livraisons.edit', bon.id)} title="Modifier" className="text-gray-400 bg-gray-50/80 hover:text-indigo-600 hover:bg-indigo-50 p-2.5 rounded-xl transition-all border border-gray-100">
+                                                            <Edit size={16} />
+                                                        </Link>
+                                                        <button onClick={() => handleDelete(bon.id)} title="Supprimer" className="text-gray-400 bg-gray-50/80 hover:text-red-600 hover:bg-red-50 p-2.5 rounded-xl transition-all border border-gray-100">
+                                                            <Trash2 size={16} />
                                                         </button>
                                                     </div>
                                                 </td>
@@ -165,40 +193,54 @@ export default function Index({ bons, filters }: { bons: any, filters: any }) {
                                         ))}
                                         {bons.data.length === 0 && (
                                             <tr>
-                                                <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">Aucun bon de livraison trouvé.</td>
+                                                <td colSpan={6} className="px-6 py-16 text-center">
+                                                    <div className="flex flex-col items-center justify-center text-gray-400">
+                                                        <AlertCircle size={48} className="mb-4 opacity-30" />
+                                                        <p className="text-lg font-medium text-gray-600">Aucun bon de livraison trouvé.</p>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         )}
                                     </tbody>
                                 </table>
                             </div>
                             
-                            {/* Pagination simple si > 1 page */}
+                            {/* Pagination (Styled to match the new crisp layout) */}
                             {bons.links && bons.links.length > 3 && (
-                                <div className="mt-4 flex justify-center">
-                                    <div className="flex gap-1">
+                                <div className="border-t border-gray-100 bg-white p-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+                                    <div className="text-sm font-medium text-gray-500">
+                                        Affichage de <span className="text-gray-900 font-bold">{bons.from}</span> à <span className="text-gray-900 font-bold">{bons.to}</span> sur <span className="text-gray-900 font-bold">{bons.total}</span> résultats
+                                    </div>
+                                    <div className="flex gap-2">
                                         {bons.links.map((link: any, idx: number) => (
                                             <Link 
                                                 key={idx}
                                                 href={link.url || '#'} 
-                                                className={`px-3 py-1 border rounded ${link.active ? 'bg-indigo-50 border-indigo-500 text-indigo-600' : 'border-gray-300 text-gray-600 hover:bg-gray-50'} ${!link.url ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                                className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${
+                                                    link.active 
+                                                        ? 'bg-[#29303d] text-white shadow-md' 
+                                                        : 'text-gray-600 bg-gray-50 border border-gray-100 hover:bg-gray-100 hover:text-gray-900'
+                                                } ${!link.url ? 'opacity-50 cursor-not-allowed' : ''}`}
                                                 dangerouslySetInnerHTML={{ __html: link.label }}
                                             />
                                         ))}
                                     </div>
                                 </div>
                             )}
-                            
                         </div>
-                    </div>
+
+                    </div> {/* Fin Super Card */}
+                    
                     <ConfirmModal 
                         show={showConfirm}
                         onClose={() => setShowConfirm(false)}
                         onConfirm={confirmDelete}
                         title="Supprimer le bon de livraison"
-                        message="Êtes-vous sûr de vouloir supprimer ce bon de livraison ? Cette action est irréversible."
+                        message="Êtes-vous sûr de vouloir supprimer ce bon de livraison ? Cette action est irréversible et supprimera le bon de l'historique du client."
                         confirmText="Supprimer"
                         type="danger"
                     />
+
                 </div>
             </div>
         </AuthenticatedLayout>

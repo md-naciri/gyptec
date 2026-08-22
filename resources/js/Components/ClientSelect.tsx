@@ -57,15 +57,31 @@ export default function ClientSelect({
             noOptionsMessage={() => "Aucun client trouvé"}
             components={{ Input: CustomInput }}
             styles={{
-                control: (base) => ({
+                control: (base, state) => ({
                     ...base,
-                    borderColor: '#D1D5DB', // gray-300
-                    borderRadius: '0.375rem', // rounded-md
-                    padding: '2px',
-                    boxShadow: 'none',
+                    borderColor: state.isFocused ? '#3661A0' : '#E5E7EB', // primary-500 on focus, else gray-200
+                    borderRadius: '0.75rem', // rounded-xl
+                    minHeight: '44px', // h-11
+                    boxShadow: state.isFocused ? '0 0 0 2px rgba(54, 97, 160, 0.2)' : '0 1px 2px 0 rgba(0, 0, 0, 0.05)', 
+                    backgroundColor: state.isFocused ? '#ffffff' : '#f9fafb', // gray-50/50
                     '&:hover': {
-                        borderColor: '#9CA3AF'
+                        borderColor: state.isFocused ? '#3661A0' : '#D1D5DB'
                     }
+                }),
+                valueContainer: (base) => ({
+                    ...base,
+                    padding: '0 12px',
+                    minHeight: '44px',
+                    height: '44px',
+                }),
+                indicatorsContainer: (base) => ({
+                    ...base,
+                    height: '44px',
+                }),
+                input: (base) => ({
+                    ...base,
+                    margin: '0',
+                    padding: '0',
                 })
             }}
         />

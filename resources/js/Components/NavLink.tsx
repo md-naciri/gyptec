@@ -10,10 +10,10 @@ export default function NavLink({
         <Link
             {...props}
             className={
-                'inline-flex items-center px-3 py-2 text-sm rounded-lg transition-colors duration-150 focus:outline-none ' +
+                'inline-flex items-center px-4 py-2 text-[14px] rounded-xl transition-all duration-200 focus:outline-none border ' +
                 (active
-                    ? 'bg-primary-100/50 text-primary-600 font-semibold'
-                    : 'text-gray-600 font-medium hover:bg-gray-100 hover:text-gray-900') +
+                    ? 'bg-[#29303d] text-white font-bold shadow-md border-transparent'
+                    : 'text-gray-500 font-medium border-transparent hover:border-gray-200 hover:bg-gray-50/80 hover:text-gray-900') +
                 ' ' + className
             }
         >

@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
     // Phase 1 Routes
+    Route::get('clients/{client}/export-excel', [ClientController::class, 'exportExcel'])->name('clients.exportExcel');
     Route::resource('clients', ClientController::class);
     Route::resource('produits', ProduitController::class);
     Route::get('prix-clients', [PrixClientController::class, 'index'])->name('prix-clients.index');

@@ -90,8 +90,9 @@ export default function DatePicker({
             minDate={minDate}
             maxDate={maxDate}
             displayFormat="DD/MM/YYYY"
-            inputClassName={`w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm py-2 ${className}`}
-            toggleClassName="absolute bg-transparent rounded-r-md text-gray-400 right-0 h-full px-3 focus:outline-none"
+            containerClassName="relative z-[100]"
+            inputClassName={`h-11 w-full rounded-xl border-gray-200 bg-gray-50/50 shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 focus:bg-white text-sm px-4 ${className}`}
+            toggleClassName="absolute bg-transparent rounded-r-xl text-gray-400 right-0 h-full px-4 focus:outline-none"
         />
     );
 }
