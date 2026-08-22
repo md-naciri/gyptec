@@ -79,13 +79,19 @@ export default function Welcome({
                 </main>
 
                 {/* Footer */}
-                <footer className="py-8 text-center relative z-10 border-t border-gray-200/50 dark:border-white/5 bg-white/50 dark:bg-[#181c25]/50 backdrop-blur-sm">
-                    <p className="text-sm font-bold text-gray-500 dark:text-gray-400 flex items-center justify-center gap-2">
-                        Designed & Developed by 
-                        <a href="#" className="text-[#29303d] dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors ml-1">
-                            md-naciri
-                        </a>
-                    </p>
+                <footer className="py-8 relative z-10 border-t border-gray-200/50 dark:border-white/5 bg-white/50 dark:bg-[#181c25]/50 backdrop-blur-sm">
+                    <div className="mx-auto max-w-[1440px] px-6 flex flex-col items-center justify-center gap-3">
+                        <div className="flex items-center gap-2">
+                            <ApplicationLogo className="h-5 w-auto grayscale opacity-50 dark:opacity-30" />
+                            <span className="text-sm font-bold text-gray-400 dark:text-gray-500">Gyptec System</span>
+                        </div>
+                        <p className="text-sm font-bold text-gray-500 dark:text-gray-400 flex items-center justify-center gap-2">
+                            Designed & Developed by 
+                            <span className="text-[#29303d] dark:text-white ml-1">
+                                MD-NACIRI
+                            </span>
+                        </p>
+                    </div>
                 </footer>
             </div>
         </>

@@ -31,7 +31,7 @@ export default function Authenticated({
     }, [flash]);
 
     return (
-        <div className="min-h-screen bg-[#f8f9fa] dark:bg-[#0f121a] text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300">
+        <div className="flex flex-col min-h-screen bg-[#f3f4f6] dark:bg-[#0f121a] text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300">
             {toastMessage && (
                 <div className="fixed top-4 right-4 z-50 animate-fade-in-down">
                     <div className={`rounded-xl px-4 py-3 shadow-xl border flex items-center gap-3 ${toastMessage.type === 'success' ? 'bg-white border-green-100' : 'bg-white border-red-100'}`}>
@@ -318,7 +318,23 @@ export default function Authenticated({
                 </header>
             )}
 
-            <main>{children}</main>
+            <main className="flex-1">{children}</main>
+
+            {/* Footer */}
+            <footer className="mt-auto py-6 border-t border-gray-200 dark:border-white/5 bg-white/40 dark:bg-[#181c25]/30 print:hidden">
+                <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                        <ApplicationLogo className="h-6 w-auto grayscale opacity-60 dark:opacity-40" />
+                        <span className="text-sm font-bold text-gray-500 dark:text-gray-400">Gyptec System</span>
+                    </div>
+                    <div className="text-sm font-bold text-gray-500 dark:text-gray-400">
+                        Designed & Developed by{' '}
+                        <span className="text-[#29303d] dark:text-white">
+                            MD-NACIRI
+                        </span>
+                    </div>
+                </div>
+            </footer>
         </div>
     );
 }

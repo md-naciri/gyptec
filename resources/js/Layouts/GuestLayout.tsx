@@ -16,9 +16,25 @@ export default function Guest({ children }: PropsWithChildren) {
                 </Link>
             </div>
 
-            <div className="mt-6 w-full overflow-hidden bg-white dark:bg-[#181c25] px-6 py-4 shadow-md sm:max-w-md sm:rounded-2xl border border-transparent dark:border-white/5">
+            <div className="mt-6 w-full overflow-hidden bg-white dark:bg-[#181c25] px-6 py-4 shadow-md sm:max-w-md sm:rounded-2xl border border-transparent dark:border-white/5 relative z-10">
                 {children}
             </div>
+
+            {/* Footer */}
+            <footer className="mt-auto py-6 w-full">
+                <div className="mx-auto max-w-[1440px] px-4 flex flex-col items-center justify-center gap-2">
+                    <div className="flex items-center gap-2">
+                        <ApplicationLogo className="h-4 w-auto grayscale opacity-50 dark:opacity-30" />
+                        <span className="text-xs font-bold text-gray-400 dark:text-gray-500">Gyptec System</span>
+                    </div>
+                    <div className="text-xs font-bold text-gray-400 dark:text-gray-500">
+                        Designed & Developed by{' '}
+                        <span className="text-[#29303d] dark:text-gray-400">
+                            MD-NACIRI
+                        </span>
+                    </div>
+                </div>
+            </footer>
         </div>
     );
 }
