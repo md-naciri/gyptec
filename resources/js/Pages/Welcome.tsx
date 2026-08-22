@@ -1,6 +1,7 @@
 import { PageProps } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import ThemeToggle from '@/Components/ThemeToggle';
+import ApplicationLogo from '@/Components/ApplicationLogo';
 
 export default function Welcome({
     auth,
