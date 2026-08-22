@@ -106,63 +106,87 @@ Les seeders ont généré trois comptes pour tester les différents rôles. Tous
 
 ---
 
-## Section 2 : Déploiement sur Wasmer (hébergement gratuit)
+## Section 2 : Déploiement sur InfinityFree (hébergement gratuit)
 
-Ce guide explique comment déployer Gyptec System gratuitement sur **[Wasmer](https://wasmer.io)**. Wasmer est une plateforme d'hébergement innovante qui supporte les applications web modernes.
+Ce guide explique comment déployer Gyptec System gratuitement sur **InfinityFree**, un hébergeur web PHP classique. InfinityFree ne permet pas l'accès en ligne de commande (SSH), le déploiement se fait donc par transfert de fichiers FTP ou via leur gestionnaire de fichiers en ligne.
 
-### 1. Préparer le dépôt GitHub
-Avant de déployer, votre code doit être prêt sur GitHub (ou GitLab/Bitbucket).
-- Ne committez **jamais** les dossiers `vendor/` ou `node_modules/`, ni votre fichier `.env`. Ces règles sont normalement déjà définies dans le fichier `.gitignore` par défaut de Laravel.
-- **Fichiers publics (Build)** : Par défaut, Wasmer ne lance pas nécessairement de build front-end (Node.js) si l'environnement PHP est sélectionné. Le plus simple est de générer les fichiers locaux et de les envoyer sur GitHub.
-  1. Éditez votre fichier `.gitignore` et commentez ou supprimez la ligne `/public/build` (pour autoriser le versioning de ce dossier).
-  2. Compilez vos assets localement : `npm run build`.
-  3. Ajoutez les fichiers modifiés et committez-les : 
-     ```bash
-     git add .
-     git commit -m "Build assets for production"
-     git push origin main
-     ```
+### 1. Préparer le paquet de déploiement (en local)
+Contrairement aux hébergeurs automatiques, sur InfinityFree vous devez envoyer un projet "prêt à l'emploi". Le dossier `vendor/` et les fichiers CSS/JS compilés doivent être inclus.
 
-### 2. Créer l'application sur Wasmer
-1. Rendez-vous sur [wasmer.io](https://wasmer.io) et créez un compte (gratuit).
-2. Depuis le tableau de bord, cliquez sur **"Create App"** (Créer une application) ou **"New Deploy"**.
-3. Liez votre compte GitHub et sélectionnez le dépôt contenant `gyptec-system`.
-4. Wasmer devrait automatiquement détecter qu'il s'agit d'une application **PHP / Laravel**.
-5. Pour la base de données, Wasmer propose souvent des bases de données intégrées (comme MySQL managé ou SQLite). S'ils proposent un Add-on MySQL, ajoutez-le au projet. Sinon, vous pouvez utiliser un service gratuit distant comme *PlanetScale* ou *Aiven* et récupérer les identifiants.
+Le dossier `deploy-package/` a été généré sur votre ordinateur contenant le projet préparé :
+- Les dépendances PHP sont installées (dossier `vendor/` généré via `composer install --no-dev --optimize-autoloader`).
+- Les assets front-end sont compilés (dossier `public/build/` généré via `npm run build`).
 
-### 3. Configurer les Variables d'Environnement (.env)
-Sur l'interface de Wasmer, allez dans les **Settings** (Paramètres) ou **Environment Variables**.
-Saisissez les clés suivantes pour la production :
+### 2. Comprendre la structure sur InfinityFree
+Sur InfinityFree, le point d'entrée public de votre site est un dossier nommé `htdocs/`.
+Pour des raisons de sécurité, le cœur de l'application Laravel **ne doit pas** être dans le dossier public. Voici la structure à adopter :
 
+```text
+/ (racine de votre hébergement)
+├── gyptec-app/        <-- (À CRÉER) Placez ici TOUT le contenu de deploy-package/ SAUF le dossier public/
+└── htdocs/            <-- Placez ici le CONTENU du dossier public/ de deploy-package/
+```
+
+### 3. Étapes de mise en ligne (via FileZilla ou le gestionnaire de fichiers)
+1. Créez un compte sur InfinityFree, puis créez un nouveau compte d'hébergement.
+2. Connectez-vous au FTP (les identifiants sont dans le panel InfinityFree).
+3. À la racine de votre hébergement (au même niveau que `htdocs/`), créez un dossier nommé `gyptec-app`.
+4. Transférez tout le contenu de votre `deploy-package/` **sauf le dossier `public`** vers le dossier `gyptec-app/`.
+5. Ouvrez le dossier `public/` de votre `deploy-package/` local, et transférez **tout son contenu** (les dossiers `build`, le fichier `index.php`, `.htaccess`, etc.) directement à l'intérieur du dossier `htdocs/` sur le serveur.
+
+### 4. Adapter les chemins (Le fichier `index.php`)
+Puisque nous avons séparé le cœur de l'application (`gyptec-app/`) du dossier public (`htdocs/`), nous devons indiquer à `index.php` où trouver les fichiers.
+Sur le serveur, modifiez le fichier `htdocs/index.php` :
+
+**Remplacez ces lignes :**
+```php
+require __DIR__.'/../vendor/autoload.php';
+$app = require_once __DIR__.'/../bootstrap/app.php';
+```
+
+**Par ces lignes :**
+```php
+require __DIR__.'/../gyptec-app/vendor/autoload.php';
+$app = require_once __DIR__.'/../gyptec-app/bootstrap/app.php';
+```
+
+### 5. Configuration de l'environnement (`.env`)
+Sur le serveur, dans le dossier `gyptec-app/`, créez un fichier `.env` (vous pouvez copier le contenu de votre `.env` local).
+Modifiez impérativement ces lignes :
 ```env
 APP_ENV=production
 APP_DEBUG=false
-APP_KEY=base64:VOTRE_CLE_ICI (Copiez la valeur exacte depuis votre .env local)
-APP_URL=https://votre-app.wasmer.app (Remplacez par l'URL fournie par Wasmer)
+APP_URL=http://votre-domaine-infinityfree.epizy.com
 
-# Configuration de la base de données (si MySQL fourni par Wasmer) :
-DB_CONNECTION=mysql
-DB_HOST=host.wasmer.database (Donné par Wasmer)
-DB_PORT=3306
-DB_DATABASE=nom_de_la_base
-DB_USERNAME=utilisateur
-DB_PASSWORD=mot_de_passe_secret
+# File d'attente (Les tâches tourneront en temps réel car il n'y a pas de worker sur InfinityFree)
+QUEUE_CONNECTION=sync
 ```
+*Note : Étant donné qu'InfinityFree n'offre pas d'accès SSH ni de tâches Cron (scheduler), toute fonctionnalité nécessitant de tourner en arrière-plan doit être configurée en mode synchrone (`sync`).*
 
-### 4. Exécuter les Migrations en Production
-Pour créer les tables dans la base de données de production :
-- Si Wasmer propose une **Console / Terminal intégré**, ouvrez-la et tapez :
-  ```bash
-  php artisan migrate --force
-  ```
-- *(Optionnel)* Si vous voulez les données de démo en ligne, tapez aussi :
-  ```bash
-  php artisan db:seed --force
-  ```
-- Si Wasmer permet de définir un **"Post Deploy Script"** (Script après déploiement) ou une commande de démarrage, vous pouvez configurer `php artisan migrate --force` pour s'exécuter à chaque déploiement.
+### 6. Base de données et Migrations
+1. Sur le panneau de contrôle (cPanel) d'InfinityFree, allez dans la section **MySQL Databases**.
+2. Créez une nouvelle base de données et notez les informations fournies (Nom de la base, Utilisateur, Mot de passe, et le "MySQL Hostname").
+3. Mettez à jour le `.env` de votre serveur (dans `gyptec-app/`) avec ces accès :
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=sqlXXX.epizy.com (Le MySQL Hostname exact)
+   DB_PORT=3306
+   DB_DATABASE=nom_de_la_base_creee
+   DB_USERNAME=utilisateur_fourni
+   DB_PASSWORD=mot_de_passe_fourni
+   ```
+4. **Exécuter les migrations sans terminal :** InfinityFree n'ayant pas d'accès SSH, vous ne pouvez pas faire `php artisan migrate`.
+   Pour un déploiement facile, créez un petit script d'installation temporaire.
+   Ouvrez le fichier `gyptec-app/routes/web.php` sur le serveur et ajoutez tout à la fin :
+   ```php
+   Route::get('/install-db', function () {
+       \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+       \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+       return 'Base de données installée avec succès !';
+   });
+   ```
+5. Visitez l'URL `http://votre-domaine.com/install-db` depuis votre navigateur. Attendez le message de succès.
+6. **TRÈS IMPORTANT :** Supprimez immédiatement cette route du fichier `routes/web.php` pour des raisons de sécurité !
 
-### 5. Vérifier le déploiement
-1. Cliquez sur le lien généré par Wasmer (ex: `https://votre-nom-gyptec.wasmer.app`).
-2. La page d'accueil avec le nouveau design doit s'afficher sans aucune erreur CSS (prouvant que le dossier `public/build` est bien lu).
-3. Cliquez sur **Se connecter** et utilisez l'adresse `admin@gyptec.local` (et le mot de passe `password`) pour tester la liaison avec la base de données de production.
-4. Si vous rencontrez une erreur 500, vérifiez les **Logs** sur le tableau de bord Wasmer pour diagnostiquer un éventuel problème de connexion MySQL ou une variable `.env` manquante.
+### 7. Vérification
+Visitez la page d'accueil de votre site. Tout devrait fonctionner correctement avec le design et la connexion à la base de données opérationnels !
