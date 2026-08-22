@@ -1,5 +1,6 @@
 import { PageProps } from '@/types';
 import { Head, Link } from '@inertiajs/react';
+import ThemeToggle from '@/Components/ThemeToggle';
 
 export default function Welcome({
     auth,
@@ -16,6 +17,8 @@ export default function Welcome({
                     </div>
 
                     <nav className="flex items-center gap-4">
+                        <ThemeToggle />
+                        
                         {auth.user ? (
                             <Link
                                 href={route('dashboard')}

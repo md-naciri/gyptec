@@ -59,6 +59,7 @@ export default function ClientSelect({
             classNamePrefix="react-select"
             noOptionsMessage={() => "Aucun client trouvé"}
             components={{ Input: CustomInput }}
+            menuPortalTarget={document.body}
             styles={{
                 control: (base, state) => ({
                     ...base,
@@ -76,6 +77,7 @@ export default function ClientSelect({
                     backgroundColor: isDarkMode ? '#1f2430' : '#ffffff',
                     border: isDarkMode ? '1px solid #ffffff0d' : '1px solid #E5E7EB',
                 }),
+                menuPortal: base => ({ ...base, zIndex: 9999 }),
                 option: (base, state) => ({
                     ...base,
                     backgroundColor: state.isSelected 
