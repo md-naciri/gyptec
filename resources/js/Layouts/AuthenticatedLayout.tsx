@@ -50,7 +50,7 @@ export default function Authenticated({
             )}
             
             {/* Navbar Premium */}
-            <nav className="bg-white/90 dark:bg-[#181c25]/90 backdrop-blur-md border-b border-gray-100 dark:border-white/5 sticky top-0 z-40 transition-all duration-300 print:hidden">
+            <nav className="bg-[#ecebe8]/70 dark:bg-[#181c25]/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-white/5 sticky top-0 z-40 transition-all duration-300 print:hidden">
                 <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
                     <div className="flex h-14 justify-between items-center gap-8">
                         {/* Logo Area */}

@@ -133,10 +133,10 @@ export default function Show({ client, timeline }: { client: any, timeline: any[
                         </div>
 
                         {/* Îlot 2 : Historique Chronologique (Timeline) */}
-                        <div className="bg-white dark:bg-[#1f2430] rounded-[1.5rem] shadow-sm border border-gray-100 dark:border-white/5 print:shadow-none print:border-none overflow-hidden">
+                        <div className="bg-white dark:bg-[#1f2430] rounded-[1.5rem] shadow-sm border border-gray-100 dark:border-white/5 print:shadow-none print:border-none">
                             
                             {/* Toolbar des filtres Timeline */}
-                            <div className="p-6 border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-[#181c25]/50 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 print:hidden">
+                            <div className="p-6 border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-[#181c25]/50 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 print:hidden rounded-t-[1.5rem]">
                                 <h3 className="font-bold text-lg text-[#29303d] dark:text-white">Historique des Transactions</h3>
                                 
                                 <div className="flex flex-wrap gap-3 items-center">
@@ -192,7 +192,7 @@ export default function Show({ client, timeline }: { client: any, timeline: any[
                                 </div>
                             </div>
 
-                            <div className="overflow-x-auto print:overflow-visible">
+                            <div className="overflow-visible print:overflow-visible">
                                 <table className="w-full text-left border-collapse print:text-xs">
                                     <thead>
                                         <tr className="bg-gray-50/50 dark:bg-[#1f2430] border-b border-gray-100 dark:border-white/5">
@@ -204,7 +204,7 @@ export default function Show({ client, timeline }: { client: any, timeline: any[
                                             <th className="px-3 sm:px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right">Crédit</th>
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-gray-100 dark:divide-white/5">
+                                    <tbody className="divide-y divide-gray-100 dark:divide-white/5 [&>tr:last-child>td:first-child]:rounded-bl-[1.5rem] [&>tr:last-child>td:last-child]:rounded-br-[1.5rem]">
                                         {filteredTimeline.length > 0 ? (
                                             filteredTimeline.map((item, idx) => {
                                                 if (item.type_doc === 'vente') {
@@ -227,7 +227,7 @@ export default function Show({ client, timeline }: { client: any, timeline: any[
                                                                     </div>
                                                                 </td>
                                                                 <td className="px-3 sm:px-6 py-3 whitespace-nowrap text-sm">
-                                                                    <Link href={route('bon-livraisons.edit', item.id)} className="font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 hover:underline">
+                                                                    <Link href={route('bon-livraisons.show', item.id)} className="font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 hover:underline">
                                                                         {item.numero}
                                                                     </Link>
                                                                 </td>
