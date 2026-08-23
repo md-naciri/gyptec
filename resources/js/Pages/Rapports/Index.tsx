@@ -172,8 +172,6 @@ export default function RapportsIndex({ clients, rapportData, filters, kpis }: a
                                     <thead>
                                         <tr className="border-b border-gray-100 dark:border-white/5 bg-white dark:bg-[#1f2430]">
                                             <th className="px-6 py-5 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Client</th>
-                                            <th className="px-6 py-5 text-right text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">CA (Période)</th>
-                                            <th className="px-6 py-5 text-right text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Encaissé (Période)</th>
                                             <th className="px-6 py-5 text-right text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Solde Actuel</th>
                                             <th className="px-6 py-5 text-center text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Statut</th>
                                         </tr>
@@ -186,12 +184,6 @@ export default function RapportsIndex({ clients, rapportData, filters, kpis }: a
                                                         <div className="font-bold text-[#29303d] dark:text-white text-[15px]">
                                                             {client.code_client} - {client.nom}
                                                         </div>
-                                                    </td>
-                                                    <td className="px-6 py-5 whitespace-nowrap text-right font-medium text-gray-600 dark:text-gray-400">
-                                                        {Number(client.ca_total).toLocaleString('fr-FR', { minimumFractionDigits: 2 })}
-                                                    </td>
-                                                    <td className="px-6 py-5 whitespace-nowrap text-right font-medium text-emerald-600 dark:text-emerald-400">
-                                                        {Number(client.encaisse_total).toLocaleString('fr-FR', { minimumFractionDigits: 2 })}
                                                     </td>
                                                     <td className={`px-6 py-5 whitespace-nowrap text-right font-black text-base ${client.solde_actuel > 0 ? 'text-rose-600 dark:text-rose-400' : client.solde_actuel < 0 ? 'text-indigo-600 dark:text-indigo-400' : 'text-[#29303d] dark:text-white'}`}>
                                                         {Number(client.solde_actuel).toLocaleString('fr-FR', { minimumFractionDigits: 2 })}
@@ -209,7 +201,7 @@ export default function RapportsIndex({ clients, rapportData, filters, kpis }: a
                                             ))
                                         ) : (
                                             <tr>
-                                                <td colSpan={5} className="px-6 py-16 text-center">
+                                                <td colSpan={3} className="px-6 py-16 text-center">
                                                     <div className="flex flex-col items-center justify-center text-gray-400">
                                                         <AlertCircle size={48} className="mb-4 opacity-30" />
                                                         <p className="text-lg font-medium text-gray-600">Aucune donnée ne correspond aux critères.</p>

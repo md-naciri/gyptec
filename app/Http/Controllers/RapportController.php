@@ -149,8 +149,6 @@ class RapportController extends Controller
             $options->setColumnWidth(25, 1);
             $options->setColumnWidth(20, 2);
             $options->setColumnWidth(20, 3);
-            $options->setColumnWidth(20, 4);
-            $options->setColumnWidth(20, 5);
 
             $writer = new \OpenSpout\Writer\XLSX\Writer($options);
             $writer->openToFile('php://output');
@@ -190,7 +188,7 @@ class RapportController extends Controller
             $writer->addRow(\OpenSpout\Common\Entity\Row::fromValues(['']));
 
             $writer->addRow(\OpenSpout\Common\Entity\Row::fromValues([
-                'Client', 'CA (Période)', 'Encaissé (Période)', 'Solde Actuel', 'Statut'
+                'Client', 'Solde Actuel', 'Statut'
             ], $headerStyle));
 
             foreach ($clientsData as $client) {
@@ -198,8 +196,6 @@ class RapportController extends Controller
                 
                 $row = new \OpenSpout\Common\Entity\Row([
                     \OpenSpout\Common\Entity\Cell::fromValue($client['code_client'] . ' - ' . $client['nom'], $rowStyleText),
-                    \OpenSpout\Common\Entity\Cell::fromValue($client['ca_total'], $rowStyle),
-                    \OpenSpout\Common\Entity\Cell::fromValue($client['encaisse_total'], $rowStyle),
                     \OpenSpout\Common\Entity\Cell::fromValue($client['solde_actuel'], $rowStyle),
                     \OpenSpout\Common\Entity\Cell::fromValue($statut, $rowStyleText),
                 ]);
@@ -210,8 +206,6 @@ class RapportController extends Controller
             
             $totalRow = new \OpenSpout\Common\Entity\Row([
                 \OpenSpout\Common\Entity\Cell::fromValue('TOTAL GLOBAL', $totalStyle),
-                \OpenSpout\Common\Entity\Cell::fromValue($totalCA, $totalStyle),
-                \OpenSpout\Common\Entity\Cell::fromValue($totalEncaisse, $totalStyle),
                 \OpenSpout\Common\Entity\Cell::fromValue($totalSolde, $totalStyle),
                 \OpenSpout\Common\Entity\Cell::fromValue('', $totalStyle),
             ]);
