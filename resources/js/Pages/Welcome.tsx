@@ -35,12 +35,6 @@ export default function Welcome({
                                 >
                                     Se connecter
                                 </Link>
-                                <Link
-                                    href={route('register')}
-                                    className="px-6 py-2.5 rounded-full bg-[#29303d] dark:bg-primary-600 text-white font-bold text-sm hover:bg-black dark:hover:bg-primary-700 transition-all shadow-md"
-                                >
-                                    S'inscrire
-                                </Link>
                             </>
                         )}
                     </nav>

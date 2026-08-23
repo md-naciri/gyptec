@@ -11,18 +11,16 @@ class ProduitSeeder extends Seeder
     public function run(): void
     {
         $produits = [
-            ['nom' => 'STAFF', 'unite' => 'tonne', 'prix_defaut' => 1500],
-            ['nom' => 'PROJETE STANDARD', 'unite' => 'tonne', 'prix_defaut' => 1200],
-            ['nom' => 'MORTIER PROJETE ULTRA', 'unite' => 'tonne', 'prix_defaut' => 1800],
-            ['nom' => 'MOULAGE', 'unite' => 'tonne', 'prix_defaut' => 1600],
-            ['nom' => 'ENDUIT FINO EXTRA', 'unite' => 'sac', 'prix_defaut' => 45],
-            ['nom' => 'TALOUCHE', 'unite' => 'sac', 'prix_defaut' => 50],
-            ['nom' => 'GYPSE STAFF 40kg', 'unite' => 'sac', 'prix_defaut' => 60],
-            ['nom' => 'GYPSE MOULAGE 40kg', 'unite' => 'sac', 'prix_defaut' => 65],
+            ['nom' => 'ENDUIT FINO EXTRA', 'unite' => 'tonne', 'prix_defaut' => 2400],
+            ['nom' => 'GYPSE STAFF', 'unite' => 'tonne', 'prix_defaut' => 600],
+            ['nom' => 'MORTIER PROJETE ULTRA', 'unite' => 'tonne', 'prix_defaut' => 1060],
+            ['nom' => 'MOULAGE', 'unite' => 'tonne', 'prix_defaut' => 600],
+            ['nom' => 'PROJETE STANDARD', 'unite' => 'tonne', 'prix_defaut' => 950],
+            ['nom' => 'TALOUCHE', 'unite' => 'tonne', 'prix_defaut' => 740],
         ];
 
         foreach ($produits as $p) {
-            Produit::create($p);
+            Produit::firstOrCreate(['nom' => $p['nom']], $p);
         }
     }
 }

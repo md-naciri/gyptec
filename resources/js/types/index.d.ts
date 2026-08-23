@@ -3,6 +3,7 @@ export interface User {
     name: string;
     email: string;
     email_verified_at?: string;
+    roles?: string[];
 }
 
 export type PageProps<
@@ -10,5 +11,9 @@ export type PageProps<
 > = T & {
     auth: {
         user: User;
+    };
+    flash: {
+        success?: string;
+        error?: string;
     };
 };

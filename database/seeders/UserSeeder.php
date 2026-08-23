@@ -11,25 +11,48 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        $admin = User::create([
-            'name' => 'Admin',
-            'email' => 'admin@gyptec.local',
-            'password' => Hash::make('password'),
-        ]);
-        $admin->assignRole('admin');
+        $superadmin = User::firstOrCreate(
+            ['email' => 'superadmin@gyptec.local'],
+            [
+                'name' => 'Superadmin',
+                'password' => Hash::make('password'),
+            ]
+        );
+        if (!$superadmin->hasRole('superadmin')) {
+            $superadmin->assignRole('superadmin');
+        }
 
-        $commercial = User::create([
-            'name' => 'Commercial',
-            'email' => 'commercial@gyptec.local',
-            'password' => Hash::make('password'),
-        ]);
-        $commercial->assignRole('commercial');
+        // $admin = User::firstOrCreate(
+        //     ['email' => 'admin@gyptec.local'],
+        //     [
+        //         'name' => 'Admin',
+        //         'password' => Hash::make('password'),
+        //     ]
+        // );
+        // if (!$admin->hasRole('admin')) {
+        //     $admin->assignRole('admin');
+        // }
 
-        $comptable = User::create([
-            'name' => 'Comptable',
-            'email' => 'comptable@gyptec.local',
-            'password' => Hash::make('password'),
-        ]);
-        $comptable->assignRole('comptable');
+        // $commercial = User::firstOrCreate(
+        //     ['email' => 'commercial@gyptec.local'],
+        //     [
+        //         'name' => 'Commercial',
+        //         'password' => Hash::make('password'),
+        //     ]
+        // );
+        // if (!$commercial->hasRole('commercial')) {
+        //     $commercial->assignRole('commercial');
+        // }
+
+        // $comptable = User::firstOrCreate(
+        //     ['email' => 'comptable@gyptec.local'],
+        //     [
+        //         'name' => 'Comptable',
+        //         'password' => Hash::make('password'),
+        //     ]
+        // );
+        // if (!$comptable->hasRole('comptable')) {
+        //     $comptable->assignRole('comptable');
+        // }
     }
 }

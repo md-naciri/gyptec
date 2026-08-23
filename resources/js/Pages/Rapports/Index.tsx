@@ -5,7 +5,7 @@ import { Head, router } from '@inertiajs/react';
 import { useState } from 'react';
 import DatePicker from '@/Components/DatePicker';
 import ClientSelect from '@/Components/ClientSelect';
-import { RefreshCw, TrendingUp, DollarSign, Wallet, AlertCircle } from 'lucide-react';
+import { RefreshCw, TrendingUp, DollarSign, Wallet, AlertCircle, Download } from 'lucide-react';
 
 export default function RapportsIndex({ clients, rapportData, filters, kpis }: any) {
     const [dateDebut, setDateDebut] = useState(filters.date_debut || '');
@@ -50,6 +50,11 @@ export default function RapportsIndex({ clients, rapportData, filters, kpis }: a
                             <div>
                                 <h1 className="text-4xl lg:text-5xl font-black text-[#29303d] dark:text-white tracking-tight mb-2">Rapports & Balances</h1>
                                 <p className="text-gray-600 dark:text-gray-400 text-lg">Analyse globale de l'activité, chiffre d'affaires et soldes clients</p>
+                            </div>
+                            <div className="flex gap-3">
+                                <a href={route('rapports.exportExcel', { date_debut: dateDebut, date_fin: dateFin, client_id: clientId, solde_filter: soldeFilter })} target="_blank" className="inline-flex items-center justify-center h-11 px-6 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-bold rounded-full hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition-colors gap-2 text-sm shadow-sm border border-emerald-100 dark:border-emerald-800/30">
+                                    <Download size={18} /> <span className="hidden sm:inline">Exporter Excel</span>
+                                </a>
                             </div>
                         </div>
 

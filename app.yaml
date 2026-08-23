@@ -1,0 +1,5 @@
+kind: wasmer.io/App.v0
+name: gyptec
+owner: md-naciri
+package: .
+app_id: da_K0DIkt5UNNEm

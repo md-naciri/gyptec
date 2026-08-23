@@ -8,7 +8,6 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
@@ -28,7 +27,11 @@ use App\Http\Controllers\EncaissementController;
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    // Superadmin Routes
+    Route::middleware(['role:superadmin'])->group(function () {
+        Route::resource('users', \App\Http\Controllers\UserController::class)->except(['show', 'edit', 'update']);
+    });
     
     // Phase 1 Routes
     Route::get('clients/{client}/export-excel', [ClientController::class, 'exportExcel'])->name('clients.exportExcel');
@@ -40,6 +43,7 @@ Route::middleware('auth')->group(function () {
     // Mouvements et Historique
     Route::resource('bon-livraisons', BonLivraisonController::class);
     Route::resource('encaissements', EncaissementController::class);
+    Route::get('/rapports/export-excel', [App\Http\Controllers\RapportController::class, 'exportExcel'])->name('rapports.exportExcel');
     Route::get('/rapports', [App\Http\Controllers\RapportController::class, 'index'])->name('rapports.index');
     Route::patch('encaissements/{encaissement}/statut', [App\Http\Controllers\EncaissementController::class, 'updateStatut'])->name('encaissements.updateStatut');
 

@@ -48,6 +48,23 @@ export default function Authenticated({
                     </div>
                 </div>
             )}
+            {/* Mobile Warning Banner */}
+            <div className="block md:hidden bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-b border-blue-100 dark:border-blue-800/30">
+                <div className="px-4 py-3 flex items-start gap-3">
+                    <div className="shrink-0 mt-0.5">
+                        <div className="bg-blue-100 dark:bg-blue-500/20 p-1.5 rounded-full shadow-sm">
+                            <svg className="w-4 h-4 text-blue-600 dark:text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <rect width="20" height="14" x="2" y="3" rx="2" />
+                                <line x1="8" x2="16" y1="21" y2="21" />
+                                <line x1="12" x2="12" y1="17" y2="21" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p className="text-[13px] font-medium text-blue-800 dark:text-blue-300 leading-snug">
+                        Pour une expérience optimale et plus de confort, nous vous recommandons d'utiliser l'application sur un <span className="font-bold">ordinateur</span> ou une <span className="font-bold">tablette</span>.
+                    </p>
+                </div>
+            </div>
             
             {/* Navbar Premium */}
             <nav className="bg-[#ecebe8]/50 dark:bg-[#181c25]/80 backdrop-blur-xl border-b border-gray-200 dark:border-white/5 sticky top-0 z-40 transition-all duration-300 print:hidden">
@@ -92,6 +109,14 @@ export default function Authenticated({
                             >
                                 Rapports
                             </NavLink>
+                            {user.roles?.includes('superadmin') && (
+                                <NavLink
+                                    href={route('users.index')}
+                                    active={route().current('users.*')}
+                                >
+                                    Utilisateurs
+                                </NavLink>
+                            )}
 
                             {/* Dropdown Configuration */}
                             <div className="relative inline-flex items-center">
@@ -105,7 +130,7 @@ export default function Authenticated({
                                                 : 'text-gray-500 dark:text-gray-400 border-transparent hover:border-gray-200 dark:hover:border-white/10 hover:bg-white/40 dark:hover:bg-white/5 hover:text-[#29303d] dark:hover:text-white'
                                             }`}
                                         >
-                                            Configuration
+                                            Tarification
                                             <svg className={`ml-1.5 h-4 w-4 transition-transform ${route().current('produits.*') || route().current('prix-clients.*') ? 'text-[#29303d] dark:text-white' : 'text-gray-400 dark:text-gray-500'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                                 <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                                             </svg>
@@ -145,7 +170,7 @@ export default function Authenticated({
                         </div>
 
                         {/* Right Area (Admin/Profile) */}
-                        <div className="hidden sm:flex sm:items-center shrink-0">
+                        <div className="hidden lg:flex lg:items-center shrink-0">
                             <ThemeToggle />
                             
                             <div className="relative">
@@ -196,7 +221,8 @@ export default function Authenticated({
                             </div>
                         </div>
 
-                        <div className="-me-2 flex items-center sm:hidden">
+                        <div className="-me-2 flex items-center lg:hidden">
+                            <ThemeToggle />
                             <button
                                 onClick={() =>
                                     setShowingNavigationDropdown(
@@ -242,7 +268,7 @@ export default function Authenticated({
                 <div
                     className={
                         (showingNavigationDropdown ? 'block' : 'hidden') +
-                        ' sm:hidden'
+                        ' lg:hidden'
                     }
                 >
                     <div className="space-y-1 pb-3 pt-2">
@@ -271,6 +297,20 @@ export default function Authenticated({
                             Clients
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
+                            href={route('rapports.index')}
+                            active={route().current('rapports.*')}
+                        >
+                            Rapports
+                        </ResponsiveNavLink>
+                        {user.roles?.includes('superadmin') && (
+                            <ResponsiveNavLink
+                                href={route('users.index')}
+                                active={route().current('users.*')}
+                            >
+                                Utilisateurs
+                            </ResponsiveNavLink>
+                        )}
+                        <ResponsiveNavLink
                             href={route('produits.index')}
                             active={route().current('produits.*')}
                         >
@@ -280,7 +320,19 @@ export default function Authenticated({
                             href={route('prix-clients.index')}
                             active={route().current('prix-clients.*')}
                         >
-                            Prix par Client
+                            Prix Spéciaux
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('remises.baremes')}
+                            active={route().current('remises.baremes')}
+                        >
+                            Barèmes Remises
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('remises.calculs')}
+                            active={route().current('remises.calculs')}
+                        >
+                            Calculer Remises
                         </ResponsiveNavLink>
                     </div>
 
@@ -296,14 +348,14 @@ export default function Authenticated({
 
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route('profile.edit')}>
-                                Profile
+                                Profil
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
                                 href={route('logout')}
                                 as="button"
                             >
-                                Log Out
+                                Déconnexion
                             </ResponsiveNavLink>
                         </div>
                     </div>
@@ -311,7 +363,7 @@ export default function Authenticated({
             </nav>
 
             {header && (
-                <header className="bg-white shadow">
+                <header className="bg-white dark:bg-[#1f2430] shadow-sm border-b border-gray-100 dark:border-white/5">
                     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                         {header}
                     </div>
